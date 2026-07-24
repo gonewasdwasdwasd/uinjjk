@@ -185,10 +185,10 @@ function AddHud() {
         timePanel.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="#FFD600"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg><span style="font-family:GothamPro;font-weight:500;font-size:14px;color:#FFD600" id="sbTime">--:--:--</span><span style="width:1px;height:14px;background:rgba(255,215,0,0.3)"></span><span style="font-family:GothamPro;font-weight:400;font-size:13px;color:rgba(255,215,0,0.5)" id="sbDate">--.--</span>';
         hud.appendChild(timePanel);
 
-        // ID + ONLINE (right side, above radar, outside)
+        // ID + ONLINE (right next to radar, outside)
         var cards = document.createElement('div');
         cards.id = 'sbCards';
-        cards.style.cssText = 'position:absolute;bottom:26vh;right:5vh;display:flex;flex-direction:column;align-items:flex-end;gap:0.5vh;';
+        cards.style.cssText = 'position:absolute;bottom:28vh;right:26vh;display:flex;flex-direction:column;align-items:flex-end;gap:0.5vh;';
 
         var idBlock = document.createElement('div');
         idBlock.id = 'sbIdBlock';
@@ -264,21 +264,30 @@ function AddHud() {
     }
 
     function getPlayerId() {
-        if (typeof mp !== 'undefined' && mp.players && mp.players.local) return mp.players.local.id;
-        if (typeof samp !== 'undefined' && samp.players && samp.players.local) return samp.players.local.id;
-        if (typeof window.interface === 'function') {
-            try { var hud = window.interface('Hud'); if (hud && hud.info && hud.info.playerId !== undefined) return hud.info.playerId; } catch(e) {}
-            try { var p = window.interface('Player'); if (p && p.info && p.info.id !== undefined) return p.info.id; } catch(e) {}
-        }
+        // Try mp.players.local.id (RADMIR CRMP)
+        try { if (typeof mp !== 'undefined' && mp.players && mp.players.local && mp.players.local.id !== undefined) return mp.players.local.id; } catch(e) {}
+        // Try samp.players.local.id
+        try { if (typeof samp !== 'undefined' && samp.players && samp.players.local && samp.players.local.id !== undefined) return samp.players.local.id; } catch(e) {}
+        // Try RageMP
+        try { if (typeof RageMP !== 'undefined' && RageMP.players && RageMP.players.local && RageMP.players.local.id !== undefined) return RageMP.players.local.id; } catch(e) {}
+        // Try window.interface('Hud').info.playerId
+        try { if (typeof window.interface === 'function') { var hud = window.interface('Hud'); if (hud && hud.info && hud.info.playerId !== undefined) return hud.info.playerId; } } catch(e) {}
+        // Try window.interface('Player').info.id
+        try { if (typeof window.interface === 'function') { var p = window.interface('Player'); if (p && p.info && p.info.id !== undefined) return p.info.id; } } catch(e) {}
+        // Try window.interface('Player').info.playerId
+        try { if (typeof window.interface === 'function') { var p2 = window.interface('Player'); if (p2 && p2.info && p2.info.playerId !== undefined) return p2.info.playerId; } } catch(e) {}
         return '-';
     }
 
     function getOnline() {
-        if (typeof mp !== 'undefined' && mp.players) return mp.players.length;
-        if (typeof samp !== 'undefined' && samp.players) return samp.players.length;
-        if (typeof window.interface === 'function') {
-            try { var hud = window.interface('Hud'); if (hud && hud.info && hud.info.online !== undefined) return hud.info.online; } catch(e) {}
-        }
+        // Try mp.players.length (RADMIR CRMP)
+        try { if (typeof mp !== 'undefined' && mp.players && mp.players.length !== undefined) return mp.players.length; } catch(e) {}
+        // Try samp.players.length
+        try { if (typeof samp !== 'undefined' && samp.players && samp.players.length !== undefined) return samp.players.length; } catch(e) {}
+        // Try window.interface('Hud').info.online
+        try { if (typeof window.interface === 'function') { var hud = window.interface('Hud'); if (hud && hud.info && hud.info.online !== undefined) return hud.info.online; } } catch(e) {}
+        // Try window.interface('Server').info.online
+        try { if (typeof window.interface === 'function') { var s = window.interface('Server'); if (s && s.info && s.info.online !== undefined) return s.info.online; } } catch(e) {}
         return '-';
     }
 
