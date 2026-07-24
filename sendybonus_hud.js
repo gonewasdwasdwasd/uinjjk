@@ -27,11 +27,7 @@ function AddHud() {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
 
-    var config = {
-        serverName: 'SendyBonus',
-        accentColor: '#FF3676'
-    };
-
+    var accentColor = '#FF3676';
     var icons = {
         health: '', armour: '', hunger: '', breath: '', cash: '',
         wanted_active: '', wanted_inactive: '', weapon_back: '', zone: '', circle: ''
@@ -44,301 +40,259 @@ function AddHud() {
     function createHud() {
         hudStyleElement = document.createElement("style");
         hudStyleElement.id = "sbHudStyles";
-
         var css = '';
+        // Шрифты
         css += '@font-face{font-family:GothamPro;src:url(https://raw.githubusercontent.com/goasdasnda/fonts/main/fonts/GothamPro-Black/GothamPro-Black.ttf) format("truetype");font-weight:900;font-style:normal}\n';
         css += '@font-face{font-family:GothamPro;src:url(https://raw.githubusercontent.com/goasdasnda/fonts/main/fonts/GothamPro-Bold/GothamPro-Bold.ttf) format("truetype");font-weight:700;font-style:normal}\n';
         css += '@font-face{font-family:GothamPro;src:url(https://raw.githubusercontent.com/goasdasnda/fonts/main/fonts/GothamPro-Medium/GothamPro-Medium.ttf) format("truetype");font-weight:500;font-style:normal}\n';
         css += '@font-face{font-family:GothamPro;src:url(https://raw.githubusercontent.com/goasdasnda/fonts/main/fonts/GothamPro-Regular/GothamPro.ttf) format("truetype");font-weight:400;font-style:normal}\n';
         css += '@font-face{font-family:GothamPro;src:url(https://raw.githubusercontent.com/goasdasnda/fonts/main/fonts/GothamPro-Light/GothamPro-Light.ttf) format("truetype");font-weight:300;font-style:normal}\n';
         css += '@font-face{font-family:GothamPro;src:url(https://raw.githubusercontent.com/goasdasnda/fonts/main/fonts/GothamPro-LightItalic/GothamPro-LightItalic.ttf) format("truetype");font-weight:300;font-style:italic}\n';
-
         // Скрытие дефолтных элементов
         css += '#app .hud-radmir-wanted{display:none}\n';
         css += 'body #app .hud-radmir-info{display:none}\n';
         css += '.hud-hassle-map .map-mask{display:none}\n';
         css += '#app .hud-radmir-radar__radar-border{display:none !important}\n';
         css += '#app .hud-radmir-radar__radar-border_new-year{display:none !important}\n';
-        css += '#app .hud-radmir-radar__radar-border_helloween{display:none !info}\n';
+        css += '#app .hud-radmir-radar__radar-border_helloween{display:none !important}\n';
         css += '#app .hud-radmir-radar__radar-bats{display:none !important}\n';
-
-        // Квадратный радар с обводкой
-        css += '#app .hud-radmir-radar__map{width:21.9vh !important;height:20.9vh !important;overflow:hidden;display:flex;justify-content:center;align-items:center;border-radius:2vh;border:0.60vh solid ' + config.accentColor + ' !important}\n';
+        // Квадратный радар — тонкая обводка, без скруглений
+        css += '#app .hud-radmir-radar__map{width:22vh !important;height:22vh !important;overflow:hidden;display:flex;justify-content:center;align-items:center;border-radius:0 !important;border:0.25vh solid ' + accentColor + ' !important}\n';
         css += 'body #app .hud-radmir-radar__map{transition:.3s}\n';
         css += '#app .hud-hassle-map{width:32vh !important;height:32vh !important}\n';
         css += '#app .hud-radmir-radar__radar{width:26.3vh}\n';
         css += '#app .hud-radmir-radar{left:7.8vh;bottom:4.03vh}\n';
-
         // Авторизация
         css += 'body .authorization{background:0 0 !important}\n';
-        css += '#app .authorization{background-image:none !important;background-size:auto 100vh !important}\n';
-
+        css += '#app .authorization{background-image:none !important}\n';
         // Модалки
         css += '#app .modal-container-wrapper{background:rgba(0,0,0,0.8) !important;border:0.19vh solid #ffffff0d;border-radius:2.5vh !important}\n';
-        css += '#app .modal-light__light{background:none !important}\n';
-        css += '#app .modal-light__light_second{background:none !important}\n';
-        css += '#app .modal-overlay{background:none !important}\n';
-
+        css += '#app .modal-light__light,#app .modal-light__light_second,#app .modal-overlay{background:none !important}\n';
         // Чат
         css += '#app .radmir-chat-input__input{background:rgba(0,0,0,0.8) !important;border-radius:11px !important;border:1px solid rgba(255,255,255,0.08) !important}\n';
         css += '#app .radmir-chat-input__input input{margin-left:.9vh !important;color:#fff !important}\n';
-
         // Инвентарь
         css += '#app .inventory{background:none}\n';
         css += '#app .inventory-container__info__container{background:rgba(0,0,0,0.8) !important;border-radius:1.1vh}\n';
         css += '#app .inventory-extra__container,#app .inventory-main{background:rgba(0,0,0,0.8);border-radius:1.1vh;padding:2vh}\n';
         css += '#app .inventory-main__after,#app .inventory-main__before{display:none}\n';
-        css += '#app .inventory-capacity,#app .inventory-container__box{border-radius:1vh;border:.1vh solid #ffffff26;background:radial-gradient(#00000003,#ffffff26 150%)}\n';
-
         // Трейд
         css += '#app .trade-items{background:none}\n';
         css += '#app .trade-items__container{border-radius:10px;background:rgba(0,0,0,0.8) !important}\n';
-
         // Топливо
         css += '#app .fuel__container{background:rgba(0,0,0,0.8);padding:3.33vh 2.96vh}\n';
         css += '#app .fuel__button{background:linear-gradient(185.93deg,#fff -22.13%,#e6e6e6 122.51%) !important;color:rgba(0,0,0,0.8) !important}\n';
-
         // Смерть
         css += '#app .death{font-style:italic;background:rgba(0,0,0,0.74) !important}\n';
-
-        // Радиальное меню
+        // Радиальное
         css += '#app .player-interaction__container{background:rgba(0,0,0,0.8);border:none}\n';
         css += '#app .player-interaction__title,.player-interaction__title_active{color:#fff !important}\n';
         css += '#app .player-interaction__icon{fill:white}\n';
-
         hudStyleElement.innerHTML = css;
         document.head.appendChild(hudStyleElement);
 
-        // ===== HUD HTML =====
         var hud = document.createElement("div");
         hud.id = 'sbHudContainer';
         hud.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;font-family:GothamPro,sans-serif';
 
-        // --- ЛОГО (верхний правый угол, из 5рп) ---
-        var logoBlock = document.createElement('div');
-        logoBlock.id = 'sbLogoBlock';
-        logoBlock.style.cssText = 'position:absolute;top:20px;right:20px;text-align:right';
-        logoBlock.innerHTML = '' +
-            '<div id="sbLogoProject" style="display:inline-block;position:relative;font-family:GothamPro;font-size:14px;color:#fff">' +
-            '<span id="sbLogoProjectType" style="font-weight:700">' + config.serverName + '</span>' +
+        // ====== ЛОГО (верхний правый угол, однострочное) ======
+        var logo = document.createElement('div');
+        logo.style.cssText = 'position:absolute;top:20px;right:20px;text-align:right';
+        logo.innerHTML = '' +
+            '<div style="display:flex;align-items:center;justify-content:flex-end;gap:10px">' +
+            '<img id="sbLogoImg" src="' + logoImages[1] + '" style="width:28vh;height:9vh;object-fit:contain">' +
+            '<div style="display:flex;flex-direction:column;align-items:flex-end">' +
+            '<div style="font-family:GothamPro;font-weight:700;font-size:1.6vh;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,0.25)"><span id="sbServerName">SendyBonus</span> <span style="color:' + accentColor + ';font-weight:900">x3</span></div>' +
+            '<div style="font-family:GothamPro;font-weight:500;font-size:1.2vh;color:#7B93D1;margin-top:0.3vh"><span id="sbOnlineCount">0</span> Online</div>' +
+            '<div style="font-family:GothamPro;font-weight:400;font-size:1.2vh;color:rgba(255,255,255,0.5);margin-top:0.2vh"><span id="sbPlayerId">[0]</span></div>' +
             '</div>' +
-            '<div id="sbLogoServer" style="font-family:GothamPro;font-weight:700;font-size:12px;color:#fff;text-transform:uppercase;text-shadow:0 2px 4px rgba(0,0,0,0.25);margin-top:4px">' +
-            '<span id="sbServerName">' + config.serverName + '</span> ' +
-            '<span id="sbOnlineCount" style="color:#7B93D1">0</span> ' +
-            '<span id="sbPlayerId" style="color:#fff;font-weight:400">[0]</span>' +
             '</div>';
-        hud.appendChild(logoBlock);
+        hud.appendChild(logo);
 
-        // --- ИНФО ПАНЕЛЬ (нижний правый угол, из 5рп) ---
+        // ====== ДЕНЬГИ (под логотипом, из примера жс кода) ======
+        var cash = document.createElement('div');
+        cash.style.cssText = 'position:absolute;top:12vh;right:20px;text-align:right';
+        cash.innerHTML = '<div style="display:flex;align-items:center;justify-content:flex-end;color:white;font-family:GothamPro;font-weight:900;font-style:italic;font-size:2.59vh;text-shadow:0 0 .46vh #000000cb"><img src="' + icons.cash + '" style="margin-right:13px;margin-top:1px"><span id="sbCashVal">0</span></div>';
+        hud.appendChild(cash);
+
+        // ====== СТАТУС БАРЫ (под деньгами) ======
+        var bars = document.createElement('div');
+        bars.style.cssText = 'position:absolute;top:16vh;right:2.6vw;display:flex;flex-direction:column;gap:0.6vh';
+        bars.innerHTML = '' +
+            '<div class="sb-bar" style="display:flex;align-items:center;gap:0.7vh">' +
+            '<img src="' + icons.health + '" style="width:1.4vh;height:1.2vh;position:relative;margin-top:-0.2vh">' +
+            '<div style="width:9.4vh;height:0.46vh;background:#0000004d;border-radius:0.46vh"><div class="sb-fill" data-p="health" style="width:100%;height:100%;background:#ed2e2e;border-radius:0.46vh;transition:width .3s"></div></div>' +
+            '<span class="sb-pv" data-p="health" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;width:3.24vh;font-size:1.67vh;text-shadow:0 0 .46vh #000000b3">100</span>' +
+            '</div>' +
+            '<div class="sb-bar" style="display:flex;align-items:center;gap:0.7vh">' +
+            '<img src="' + icons.armour + '" style="width:1.4vh;height:1.4vh;position:relative;margin-top:-0.2vh">' +
+            '<div style="width:9.4vh;height:0.46vh;background:#0000004d;border-radius:0.46vh"><div class="sb-fill" data-p="armour" style="width:0%;height:100%;background:#526ee6;border-radius:0.46vh;transition:width .3s"></div></div>' +
+            '<span class="sb-pv" data-p="armour" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;width:3.24vh;font-size:1.67vh;text-shadow:0 0 .46vh #000000b3">0</span>' +
+            '</div>' +
+            '<div class="sb-bar" style="display:flex;align-items:center;gap:0.7vh">' +
+            '<img src="' + icons.hunger + '" style="width:0.9vh;height:1.1vh;position:relative;margin-top:-0.2vh">' +
+            '<div style="width:9.4vh;height:0.46vh;background:#0000004d;border-radius:0.46vh"><div class="sb-fill" data-p="hunger" style="width:100%;height:100%;background:#ff872e;border-radius:0.46vh;transition:width .3s"></div></div>' +
+            '<span class="sb-pv" data-p="hunger" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;width:3.24vh;font-size:1.67vh;text-shadow:0 0 .46vh #000000b3">100</span>' +
+            '</div>' +
+            '<div class="sb-bar" id="sbBreathBar" style="display:none;align-items:center;gap:0.7vh">' +
+            '<img src="' + icons.breath + '" style="width:1.7vh;height:1.7vh;position:relative;margin-top:-0.2vh">' +
+            '<div style="width:9.4vh;height:0.46vh;background:#0000004d;border-radius:0.46vh"><div class="sb-fill" data-p="breath" style="width:100%;height:100%;background:#4fc3f7;border-radius:0.46vh;transition:width .3s"></div></div>' +
+            '<span class="sb-pv" data-p="breath" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;width:3.24vh;font-size:1.67vh;text-shadow:0 0 .46vh #000000b3">100</span>' +
+            '</div>';
+        hud.appendChild(bars);
+
+        // ====== ОРУЖИЕ + WANTED + AMMO ======
+        var weaponWrap = document.createElement('div');
+        weaponWrap.id = 'sbWeaponWrap';
+        weaponWrap.style.cssText = 'position:absolute;top:25vh;right:2vw;width:16.6vh;height:16.6vh;display:none';
+        weaponWrap.innerHTML = '' +
+            '<img id="sbWeaponBack" src="' + icons.wanted_back + '" style="position:absolute;right:-1.4vh;top:-1.6vh;z-index:-1">' +
+            '<img id="sbWeaponIcon" src="" style="width:40vh;height:17.6vh">' +
+            '<div style="position:absolute;bottom:5.6vh;right:6vh;display:flex;align-items:flex-end;color:#fff;gap:3.4vh">' +
+            '<span style="font-family:GothamPro;font-weight:700;font-style:italic;font-size:2.31vh;line-height:1;text-shadow:0 0 .46vh #00000080" id="sbAmmoInClip">0</span>' +
+            '<span style="font-family:GothamPro;font-weight:300;font-style:italic;font-size:1.67vh;text-shadow:0 0 .46vh #000000b3" id="sbAmmoTotal"> /0</span>' +
+            '</div>';
+        hud.appendChild(weaponWrap);
+
+        // ====== WANTED (5 звёзд, под логотипом) ======
+        var wantedWrap = document.createElement('div');
+        wantedWrap.id = 'sbWantedWrap';
+        wantedWrap.style.cssText = 'position:absolute;top:13.5vh;right:20px;display:none;align-items:center;gap:0.3vh;flex-direction:row-reverse';
+        hud.appendChild(wantedWrap);
+
+        // ====== СПИДОМЕТР (над временем, снизу справа) ======
+        var speedPanel = document.createElement('div');
+        speedPanel.id = 'sbSpeedPanel';
+        speedPanel.style.cssText = 'position:absolute;bottom:68px;right:20px;display:none;align-items:center;padding:10px 22px 10px 30px;background:rgba(7,16,48,0.62);border-radius:41px 9px 9px 40px;gap:12px';
+        speedPanel.innerHTML = '' +
+            '<div style="display:flex;align-items:baseline;gap:4px">' +
+            '<span style="font-family:GothamPro;font-weight:700;font-size:22px;color:#fff" id="sbSpeed">0</span>' +
+            '<span style="font-family:GothamPro;font-weight:500;font-size:11px;color:rgba(255,255,255,0.5)">км/ч</span>' +
+            '</div>' +
+            '<div style="width:1px;height:24px;background:rgba(255,255,255,0.1)"></div>' +
+            '<div style="display:flex;flex-direction:column;align-items:center">' +
+            '<span style="font-family:GothamPro;font-weight:500;font-size:13px;color:#8BA2F0" id="sbFuel">0 L</span>' +
+            '</div>';
+        hud.appendChild(speedPanel);
+
+        // ====== ИНФО ПАНЕЛЬ (снизу справа — время и дата) ======
         var infoPanel = document.createElement('div');
-        infoPanel.id = 'sbInfoPanelBlock';
-        infoPanel.style.cssText = 'position:absolute;bottom:20px;right:20px;display:flex;align-items:center';
+        infoPanel.style.cssText = 'position:absolute;bottom:20px;right:20px;display:flex;align-items:center;padding:14px 22px 14px 30px;background:rgba(7,16,48,0.62);border-radius:41px 9px 9px 40px';
         infoPanel.innerHTML = '' +
-            '<div id="sbInfoPanel" style="display:flex;align-items:center;padding:14px 22px 14px 30px;background:rgba(7,16,48,0.62);border-radius:41px 9px 9px 40px">' +
-            '<div style="margin-left:10px">' +
-            '<div style="display:flex;align-items:center">' +
-            '<div style="font-family:GothamPro;font-weight:500;font-size:15px;color:#fff" id="sbTime">00:00</div>' +
-            '<div style="font-family:GothamPro;font-weight:500;font-size:15px;color:#7B93D1;margin-left:auto" id="sbDate">00.00.0000</div>' +
-            '</div>' +
-            '<div style="display:flex;align-items:center;margin-top:4px">' +
-            '<div style="font-family:GothamPro;font-weight:500;font-size:15px;color:#fff" id="sbMoney">$0</div>' +
-            '</div>' +
+            '<svg width="24" height="24" viewBox="0 0 18 18" style="margin-right:8.5px;flex-shrink:0"><path fill-rule="evenodd" clip-rule="evenodd" d="M9 1.5C13.1421 1.5 16.5 4.85786 16.5 9C16.5 13.1421 13.1421 16.5 9 16.5C4.85786 16.5 1.5 13.1421 1.5 9C1.5 4.85786 4.85786 1.5 9 1.5ZM8.99999 3C5.68628 3 2.99999 5.6863 2.99999 9C2.99999 12.3137 5.68628 15 8.99999 15C12.3137 15 15 12.3137 15 9C15 5.6863 12.3137 3 8.99999 3ZM9 4.5C9.38463 4.5 9.70163 4.78953 9.74495 5.16253L9.75 5.25V8.68934L11.0303 9.96967C11.3232 10.2626 11.3232 10.7374 11.0303 11.0303C10.76 11.3007 10.3345 11.3215 10.0403 11.0927L9.96967 11.0303L8.46967 9.53033C8.35246 9.41312 8.27805 9.2611 8.2565 9.09858L8.25 9V5.25C8.25 4.83578 8.58579 4.5 9 4.5Z" fill="white"/></svg>' +
+            '<div style="display:flex;flex-direction:column">' +
+            '<div style="display:flex;align-items:center;gap:12px">' +
+            '<span style="font-family:GothamPro;font-weight:500;font-size:15px;color:#fff" id="sbTime">--:--</span>' +
+            '<span style="font-family:GothamPro;font-weight:500;font-size:15px;color:#7B93D1" id="sbDate">--.--.----</span>' +
             '</div>' +
             '</div>';
         hud.appendChild(infoPanel);
 
-        // --- ПАНЕЛЬ ПОДСКАЗОК (слева по центру, из 5рп) ---
-        var helpPanel = document.createElement('div');
-        helpPanel.id = 'sbHelpPanel';
-        helpPanel.style.cssText = 'position:absolute;top:50%;left:20px;transform:translateY(-50%);font-family:GothamPro;font-size:14px;color:#fff;text-shadow:1px 1px 4px #000';
-        helpPanel.innerHTML = '' +
-            '<div style="margin-top:5px;display:flex;align-items:center"><span style="min-width:20px;padding:2px 4px;margin-right:5px;background:rgba(0,0,0,0.4);border-radius:5px;text-transform:uppercase;text-align:center">I</span> Инвентарь</div>' +
-            '<div style="margin-top:5px;display:flex;align-items:center"><span style="min-width:20px;padding:2px 4px;margin-right:5px;background:rgba(0,0,0,0.4);border-radius:5px;text-transform:uppercase;text-align:center">N</span> Микрофон</div>' +
-            '<div style="margin-top:5px;display:flex;align-items:center"><span style="min-width:20px;padding:2px 4px;margin-right:5px;background:rgba(0,0,0,0.4);border-radius:5px;text-transform:uppercase;text-align:center">T</span> Чат</div>' +
-            '<div style="margin-top:5px;display:flex;align-items:center"><span style="min-width:20px;padding:2px 4px;margin-right:5px;background:rgba(0,0,0,0.4);border-radius:5px;text-transform:uppercase;text-align:center">Y</span> Меню</div>' +
-            '<div style="margin-top:5px;display:flex;align-items:center"><span style="min-width:20px;padding:2px 4px;margin-right:5px;background:rgba(0,0,0,0.4);border-radius:5px;text-transform:uppercase;text-align:center">U</span> Анимации</div>' +
-            '<div style="margin-top:5px;display:flex;align-items:center"><span style="min-width:20px;padding:2px 4px;margin-right:5px;background:rgba(0,0,0,0.4);border-radius:5px;text-transform:uppercase;text-align:center">Ё</span> Курсор</div>' +
-            '<div style="margin-top:5px;display:flex;align-items:center"><span style="min-width:20px;padding:2px 4px;margin-right:5px;background:rgba(0,0,0,0.4);border-radius:5px;text-transform:uppercase;text-align:center">F10</span> Помощь</div>';
-        hud.appendChild(helpPanel);
+        // ====== ПОДСКАЗКИ (справа от радара) ======
+        var help = document.createElement('div');
+        help.id = 'sbHelpPanel';
+        help.style.cssText = 'position:absolute;bottom:4vh;left:calc(7.8vh + 22vh + 2vh);display:flex;flex-direction:column;gap:0.4vh;font-family:GothamPro;font-size:1.4vh;color:#fff;text-shadow:1px 1px 4px #000';
+        help.innerHTML = '' +
+            '<div style="display:flex;align-items:center;gap:0.5vh"><span style="min-width:2vh;padding:0.2vh 0.4vh;background:rgba(0,0,0,0.4);border-radius:0.5vh;text-align:center">M</span> Меню</div>' +
+            '<div style="display:flex;align-items:center;gap:0.5vh"><span style="min-width:2vh;padding:0.2vh 0.4vh;background:rgba(0,0,0,0.4);border-radius:0.5vh;text-align:center">I</span> Инвентарь</div>' +
+            '<div style="display:flex;align-items:center;gap:0.5vh"><span style="min-width:2vh;padding:0.2vh 0.4vh;background:rgba(0,0,0,0.4);border-radius:0.5vh;text-align:center">X</span> Голос</div>' +
+            '<div style="display:flex;align-items:center;gap:0.5vh"><span style="min-width:2vh;padding:0.2vh 0.4vh;background:rgba(0,0,0,0.4);border-radius:0.5vh;text-align:center">Z</span> Анимации</div>' +
+            '<div style="display:flex;align-items:center;gap:0.5vh"><span style="min-width:2vh;padding:0.2vh 0.4vh;background:rgba(0,0,0,0.4);border-radius:0.5vh;text-align:center">F1</span> Помощь</div>';
+        hud.appendChild(help);
 
-        // --- НИЖНЯЯ ПАНЕЛЬ СЛЕВА (зона/улица + патроны, из 5рп) ---
-        var bottomPanel = document.createElement('div');
-        bottomPanel.id = 'sbBottomPanel';
-        bottomPanel.style.cssText = 'position:absolute;bottom:1.05vw;left:17vw;display:flex;align-items:center;gap:8px';
-        bottomPanel.innerHTML = '' +
-            '<div style="padding:10px;background:rgba(7,16,48,0.5);border-radius:9px">' +
-            '<div style="font-family:GothamPro;font-weight:600;font-size:14px;color:#30A8FF" id="sbStreet">Шоссе Сенора</div>' +
-            '<div style="font-family:GothamPro;font-weight:400;font-size:14px;color:rgba(255,255,255,0.7)" id="sbCrossing">Гора Чиллиад</div>' +
-            '</div>' +
-            '<div id="sbAmmoBlock" style="display:none;background:rgba(7,16,48,0.5);border-radius:9px;padding:8px 12px;align-items:center;gap:8px">' +
-            '<div style="font-family:GothamPro;font-weight:500;font-size:18px;color:#fff" id="sbAmmoValue">0</div>' +
-            '</div>';
-        hud.appendChild(bottomPanel);
-
-        // --- СТАТУС БАРЫ (из примера жс кода, правая сторона) ---
-        var hudTop = document.createElement('div');
-        hudTop.style.cssText = 'position:absolute;right:1.4vw;top:3.4vh;display:flex;flex-direction:column;align-items:flex-end';
-        hudTop.innerHTML = '' +
-            '<div style="position:relative;margin-bottom:3vh" id="sbLogoWrap">' +
-            '<img id="sbLogoImg" src="' + logoImages[1] + '" style="width:20.52vh;height:6.2vh;margin-right:2vh">' +
-            '<div id="sbBonus" style="background:rgba(0,0,0,1);width:33px;height:33px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;position:absolute;bottom:-5px;right:-2px;border-radius:50%;font-family:GothamPro;font-size:1.49vh">x3</div>' +
-            '</div>' +
-            '<div style="display:flex;align-items:center;margin-top:.46vh;margin-right:3.46vh">' +
-            '<div style="height:13.5vh;position:relative;z-index:1">' +
-            '<div style="display:flex;align-items:center;justify-content:flex-end;color:white;font-family:GothamPro;font-weight:900;font-style:italic;font-size:2.59vh;text-shadow:0 0 .46vh #000000cb">' +
-            '<img src="' + icons.cash + '" style="margin-right:13px;margin-top:1px"><span id="sbCashVal">0</span>' +
-            '</div>' +
-            '<div style="margin-top:1vh">' +
-            '<div class="sb-param health" style="display:flex;align-items:center;margin-top:0;margin-left:1.89vh">' +
-            '<img src="' + icons.health + '" class="old-param__icon" style="margin-right:0.8vh;margin-top:-0.2vh">' +
-            '<div style="width:9.40vh;height:.46vh;background-color:#0000004d;border-radius:.46vh"><div class="sb-bar-fill" data-param="health" style="width:100%;height:100%;background-color:rgba(237,46,46,1);border-radius:.46vh"></div></div>' +
-            '<span class="sb-param-val" data-param="health" style="margin-left:.93vh;font-family:GothamPro;font-weight:300;font-style:italic;color:white;width:3.24vh;font-size:1.67vh;text-shadow:0 0 .46vh #000000b3">100</span>' +
-            '</div>' +
-            '<div class="sb-param armour" style="display:flex;align-items:center;margin-top:.95vh">' +
-            '<img src="' + icons.armour + '" class="old-param__icon" style="margin-right:0.8vh;margin-top:-0.2vh">' +
-            '<div style="width:9.40vh;height:.46vh;background-color:#0000004d;border-radius:.46vh"><div class="sb-bar-fill" data-param="armour" style="width:0%;height:100%;background-color:rgba(82,110,230,1);border-radius:.46vh"></div></div>' +
-            '<span class="sb-param-val" data-param="armour" style="margin-left:.93vh;font-family:GothamPro;font-weight:300;font-style:italic;color:white;width:3.24vh;font-size:1.67vh;text-shadow:0 0 .46vh #000000b3">0</span>' +
-            '</div>' +
-            '<div class="sb-param hunger" style="display:flex;align-items:center;margin-top:.95vh;margin-left:-0.25vh">' +
-            '<img src="' + icons.hunger + '" class="old-param__icon" style="margin-right:0.8vh;margin-top:-0.2vh">' +
-            '<div style="width:9.40vh;height:.46vh;background-color:#0000004d;border-radius:.46vh"><div class="sb-bar-fill" data-param="hunger" style="width:100%;height:100%;background-color:rgba(255,135,46,1);border-radius:.46vh"></div></div>' +
-            '<span class="sb-param-val" data-param="hunger" style="margin-left:.93vh;font-family:GothamPro;font-weight:300;font-style:italic;color:white;width:3.24vh;font-size:1.67vh;text-shadow:0 0 .46vh #000000b3">100</span>' +
-            '</div>' +
-            '<div class="sb-param breath" style="display:flex;align-items:center;margin-top:.95vh;display:none">' +
-            '<img src="' + icons.breath + '" class="old-param__icon" style="margin-right:0.8vh;margin-top:-0.2vh;width:1.7vh;height:1.7vh">' +
-            '<div style="width:9.40vh;height:.46vh;background-color:#0000004d;border-radius:.46vh"><div class="sb-bar-fill" data-param="breath" style="width:100%;height:100%;background-color:rgba(79,195,247,1);border-radius:.46vh"></div></div>' +
-            '<span class="sb-param-val" data-param="breath" style="margin-left:.93vh;font-family:GothamPro;font-weight:300;font-style:italic;color:white;width:3.24vh;font-size:1.67vh;text-shadow:0 0 .46vh #000000b3">100</span>' +
-            '</div>' +
-            '</div>' +
-            '</div>' +
-            '<div id="sbWeaponWrap" style="width:16.6vh;height:16.6vh;position:relative;display:flex;justify-content:flex-end;margin-left:-.93vh;margin-right:.46vh;visibility:hidden">' +
-            '<img id="sbWeaponBack" src="' + icons.wanted_back + '" style="position:absolute;right:-1.4vh;top:-1.6vh;z-index:-1">' +
-            '<img id="sbWeaponIcon" src="" style="width:40vh;height:17.6vh">' +
-            '<div id="sbAmmoClip" style="position:absolute;bottom:5.6vh;right:6vh;display:flex;align-items:flex-end;color:#fff;gap:3.4vh">' +
-            '<span style="font-family:GothamPro;font-weight:700;font-style:italic;font-size:2.31vh;line-height:1;text-shadow:0 0 .46vh #00000080" id="sbAmmoInClip">0</span>' +
-            '<span style="font-family:GothamPro;font-weight:300;font-style:italic;font-size:1.67vh;text-shadow:0 0 .46vh #000000b3" id="sbAmmoTotal"> /0</span>' +
-            '</div>' +
-            '</div>' +
-            '</div>' +
-            '<div id="sbWantedWrap" style="position:relative;margin-right:6vh;margin-top:-1.6vh;transform:translateY(60%);display:none">' +
-            '<img src="' + icons.weapon_back + '" style="position:absolute;right:-1.2vh;top:-0.66vh;z-index:-1">' +
-            '<div id="sbWantedRow" style="display:flex;flex-direction:row-reverse;align-items:center"></div>' +
-            '</div>' +
-            '</div>';
-        hud.appendChild(hudTop);
-
-        // --- FREEZE ---
+        // ====== FREEZE ======
         var freeze = document.createElement('div');
-        freeze.id = 'sbFreezeWrap';
-        freeze.style.cssText = 'position:absolute;background:hsl(190deg 63% 66% / 40%);width:26.1111vh;height:0.65vh;border-radius:1vh;outline:hsl(0deg 0% 0% / 20%) 0.2vh solid;outline-offset:0.1vh;overflow:hidden;left:11.1620vh;bottom:2.7778vh';
+        freeze.style.cssText = 'position:absolute;background:hsl(190deg 63% 66% / 40%);width:26.11vh;height:0.65vh;border-radius:1vh;outline:hsl(0deg 0% 0% / 20%) 0.2vh solid;outline-offset:0.1vh;overflow:hidden;left:11.16vh;bottom:2.78vh';
         freeze.innerHTML = '<span style="font-family:GothamPro;font-weight:700;color:#c0ccec;font-size:2vh;text-shadow:0 0 2vh #000;margin-right:1vh">Freeze:</span><span style="font-family:GothamPro;font-weight:700;color:#c0ccec;font-size:2vh;text-shadow:0 0 2vh #000" id="sbFreezeVal">100</span>';
         hud.appendChild(freeze);
 
         document.body.appendChild(hud);
 
-        // Wanted stars
-        var wantedRow = document.getElementById('sbWantedRow');
-        for (var w = 0; w < 6; w++) {
+        // Wanted stars (5 штук как в GTA)
+        var wr = document.getElementById('sbWantedWrap');
+        for (var w = 0; w < 5; w++) {
             var star = document.createElement('img');
             star.src = icons.inactive_wanted;
-            star.style.cssText = 'width:2.3vh;height:1.8vh;padding:0.19vh 0.28vh';
-            wantedRow.appendChild(star);
+            star.className = 'sb-wanted-star';
+            star.style.cssText = 'width:2.5vh;height:2vh;padding:0.15vh;transition:opacity .2s';
+            wr.appendChild(star);
         }
     }
 
     // ============ Update Handlers ============
     var updateFunctions = {
-        show: function(v) {
-            var el = document.getElementById('sbHudContainer');
-            if (el) el.style.display = +v >= 1 ? '' : 'none';
-        },
+        show: function(v) { var el = document.getElementById('sbHudContainer'); if (el) el.style.display = +v >= 1 ? '' : 'none'; },
         showBars: function(v) { updateFunctions.show(v); },
         health: function(v) { updateBar('health', v); },
         armour: function(v) { updateBar('armour', v); },
         hunger: function(v) { updateBar('hunger', v); },
         breath: function(v) {
-            var p = document.querySelector('.sb-param.breath');
-            if (p) p.style.display = v < 99 ? 'flex' : 'none';
+            var b = document.getElementById('sbBreathBar');
+            if (b) b.style.display = v < 99 ? 'flex' : 'none';
             updateBar('breath', v);
         },
         money: function(v) {
             var el = document.getElementById('sbCashVal');
             if (el) el.textContent = formatNumberWithDots(v);
-            var el2 = document.getElementById('sbMoney');
-            if (el2) el2.textContent = '$' + formatNumberWithDots(v);
         },
         weapon: function(v) {
             var icon = document.getElementById('sbWeaponIcon');
             var wrap = document.getElementById('sbWeaponWrap');
             if (icon && weaponIcons[v]) icon.src = weaponIcons[v];
-            if (wrap) wrap.style.visibility = v >= 1 ? 'visible' : 'hidden';
+            if (wrap) wrap.style.display = v >= 1 ? '' : 'none';
         },
-        ammoInClip: function(v) {
-            var el = document.getElementById('sbAmmoInClip');
-            if (el) el.textContent = v;
-        },
-        totalAmmo: function(v) {
-            var el = document.getElementById('sbAmmoTotal');
-            if (el) el.textContent = ' ' + v;
-        },
+        ammoInClip: function(v) { var el = document.getElementById('sbAmmoInClip'); if (el) el.textContent = v; },
+        totalAmmo: function(v) { var el = document.getElementById('sbAmmoTotal'); if (el) el.textContent = ' ' + v; },
         wanted: function(v) {
-            var stars = document.querySelectorAll('#sbWantedRow img');
-            stars.forEach(function(s, i) { s.src = i < v ? icons.active_wanted : icons.inactive_wanted; });
+            var stars = document.querySelectorAll('.sb-wanted-star');
+            var level = Math.min(v, 5);
+            stars.forEach(function(s, i) {
+                if (i < level) {
+                    s.src = icons.active_wanted;
+                    s.style.opacity = '1';
+                } else {
+                    s.src = icons.inactive_wanted;
+                    s.style.opacity = '0.3';
+                }
+            });
             var wrap = document.getElementById('sbWantedWrap');
-            if (wrap) wrap.style.display = v > 0 ? '' : 'none';
+            if (wrap) wrap.style.display = level > 0 ? 'flex' : 'none';
         },
         server: function(id) {
             var img = document.getElementById('sbLogoImg');
-            if (img) {
-                if (id <= 0) { img.style.display = 'none'; return; }
-                img.style.display = '';
-                if (logoImages[id]) img.src = logoImages[id];
-            }
+            if (img) { if (id <= 0) { img.style.display = 'none'; return; } img.style.display = ''; if (logoImages[id]) img.src = logoImages[id]; }
         },
         bonus: function(v) {
-            var el = document.getElementById('sbBonus');
-            if (el) { el.style.display = v <= 1 ? 'none' : ''; el.textContent = 'x' + v; }
+            // x3 теперь в логотипе как текст — обновлять не нужно
         },
-        freeze: function(v) {
-            var el = document.getElementById('sbFreezeVal');
-            if (el) el.textContent = String(v).padStart(3, '0');
-        },
-        time: function(v) {
-            var el = document.getElementById('sbTime');
+        freeze: function(v) { var el = document.getElementById('sbFreezeVal'); if (el) el.textContent = String(v).padStart(3, '0'); },
+        time: function(v) { var el = document.getElementById('sbTime'); if (el) el.textContent = v; },
+        date: function(v) { var el = document.getElementById('sbDate'); if (el) el.textContent = v; },
+        street: function(v) {},
+        crossingRoad: function(v) {},
+        online: function(v) { var el = document.getElementById('sbOnlineCount'); if (el) el.textContent = v; },
+        playerId: function(v) { var el = document.getElementById('sbPlayerId'); if (el) el.textContent = '[' + v + ']'; },
+        ammo: function(v) {},
+        greenZone: function(v) {},
+        speed: function(v) {
+            var el = document.getElementById('sbSpeed');
+            var panel = document.getElementById('sbSpeedPanel');
             if (el) el.textContent = v;
+            if (panel) panel.style.display = 'flex';
         },
-        date: function(v) {
-            var el = document.getElementById('sbDate');
-            if (el) el.textContent = v;
+        fuel: function(v) {
+            var el = document.getElementById('sbFuel');
+            if (el) el.textContent = v + ' L';
         },
-        street: function(v) {
-            var el = document.getElementById('sbStreet');
-            if (el) el.textContent = v;
-        },
-        crossingRoad: function(v) {
-            var el = document.getElementById('sbCrossing');
-            if (el) el.textContent = v;
-        },
-        online: function(v) {
-            var el = document.getElementById('sbOnlineCount');
-            if (el) el.textContent = v;
-        },
-        playerId: function(v) {
-            var el = document.getElementById('sbPlayerId');
-            if (el) el.textContent = '[' + v + ']';
-        },
-        ammo: function(v) {
-            var el = document.getElementById('sbAmmoBlock');
-            var val = document.getElementById('sbAmmoValue');
-            if (el) el.style.display = v > 0 ? 'flex' : 'none';
-            if (val) val.textContent = v;
-        },
-        greenZone: function(v) {}
+        inVeh: function(v) {
+            var panel = document.getElementById('sbSpeedPanel');
+            if (panel) panel.style.display = v ? 'flex' : 'none';
+        }
     };
 
     function updateBar(param, value) {
-        var fill = document.querySelector('.sb-bar-fill[data-param="' + param + '"]');
-        var val = document.querySelector('.sb-param-val[data-param="' + param + '"]');
+        var fill = document.querySelector('.sb-fill[data-p="' + param + '"]');
+        var val = document.querySelector('.sb-pv[data-p="' + param + '"]');
         if (fill) fill.style.width = value + '%';
         if (val) val.textContent = value;
     }
@@ -354,7 +308,6 @@ function AddHud() {
         if (updateFunctions[type]) updateFunctions[type](value);
     }
 
-    // ============ Proxy ============
     function initializeHudProxy() {
         var attempts = 0;
         var checkInterval = setInterval(function() {
@@ -365,7 +318,6 @@ function AddHud() {
                 var hudInfo = window.interface("Hud").info;
                 var cloned;
                 try { cloned = JSON.parse(JSON.stringify(hudInfo)); } catch(e) { return; }
-
                 window.interface("Hud").info = new Proxy(cloned, {
                     set: function(target, prop, value) {
                         if (target[prop] !== value) { target[prop] = value; onInfoChange(prop, value); }
@@ -376,13 +328,10 @@ function AddHud() {
                 window.interface("Hud").setBonus = function(v) { onInfoChange("bonus", v); window.interface("Hud").bonus = v; };
                 window.interface("Hud").showGreenZoneTab = function() { onInfoChange("greenZone", true); };
                 window.interface("Hud").hideGreenZoneTab = function() { onInfoChange("greenZone", false); };
-
                 createHud();
-
                 var props = ['health','armour','hunger','breath','money','wanted','ammoInClip','totalAmmo','freeze','weapon','show','time','date','street','crossingRoad','online','playerId','ammo'];
                 props.forEach(function(p) { if (p in hudInfo && updateFunctions[p]) updateFunctions[p](hudInfo[p]); });
                 if ('server' in window.interface("Hud")) updateFunctions.server(window.interface("Hud").server);
-                if ('bonus' in window.interface("Hud")) updateFunctions.bonus(window.interface("Hud").bonus);
             }
         }, 100);
     }
@@ -393,7 +342,7 @@ function AddHud() {
 AddHud();
 
 // ============================================================
-// /color — Смена цвета обводки радара
+// /color — Перекраска ВСЕГО худа
 // ============================================================
 (function() {
     if (window.__sbColorInit) return;
@@ -429,14 +378,21 @@ AddHud();
         if (colorStyleNode) colorStyleNode.remove();
         var s = document.createElement('style');
         s.id = 'sb-color-override';
-        s.textContent = '#app .hud-radmir-radar__map{border:0.60vh solid ' + color + ' !important}';
+        var css = '';
+        // Радар обводка
+        css += '#app .hud-radmir-radar__map{border-color:' + color + ' !important}\n';
+        // x3 текст в логотипе
+        css += '#sbHudContainer [style*="font-weight:900"]{color:' + color + ' !important}\n';
+        // Info panel accent
+        css += '#sbHudContainer #sbDate{color:' + color + ' !important}\n';
+        s.textContent = css;
         document.head.appendChild(s);
         colorStyleNode = s;
     }
 
     function openColorMenu() {
         var list = colorPresets.map(function(p) { return p.name; }).join('<n>');
-        window.addDialogInQueue('[0,2,"Цвет худа","Выберите цвет:","Выбрать","Закрыть",0,0]', list, 0);
+        window.addDialogInQueue('[0,2,"Цвет худа","Выберите:","Выбрать","Закрыть",0,0]', list, 0);
         var orig = window.sendClientEvent;
         window.sendClientEvent = function() {
             var args = Array.prototype.slice.call(arguments);
