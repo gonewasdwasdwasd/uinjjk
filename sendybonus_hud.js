@@ -176,22 +176,23 @@ function AddHud() {
         cashEl.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;width:2.8vh;height:2.8vh;background:#FFD600;border-radius:0.4vh;font-size:1.8vh;font-style:normal;font-weight:900;color:#000;margin-right:0.8vh">P</span><span id="sbCashVal">0</span>';
         hud.appendChild(cashEl);
 
-        // БАРЫ (по длине радара 21.9vh, с иконками)
+        // БАРЫ (справа от радара, тонкие, закруглённые, с цветом)
         var bars = document.createElement('div');
-        bars.style.cssText = 'position:absolute;bottom:3.4vh;left:5vh;display:flex;gap:0.3vh;width:21.9vh';
+        bars.id = 'sbBars';
+        bars.style.cssText = 'position:absolute;bottom:4vh;left:28vh;display:flex;flex-direction:column;gap:0.5vh;width:10vh';
 
-        function makeBar(param, val, iconSrc) {
-            return '<div style="flex:1;display:flex;align-items:center;gap:0.4vh;height:1.8vh;position:relative;background:#0000004d;border-radius:0;overflow:hidden">' +
-                '<div class="sb-fill" data-p="' + param + '" style="width:' + val + '%;height:100%;position:absolute;top:0;left:0;transition:width .3s"></div>' +
-                '<span class="sb-pv" data-p="' + param + '" style="position:relative;z-index:2;font-family:GothamPro;font-weight:700;font-style:italic;color:#fff;font-size:1.3vh;text-shadow:0 0 0.3vh #000;min-width:3vh;text-align:right">' + val + '</span>' +
-                (iconSrc ? '<img src="' + iconSrc + '" style="width:1.2vh;height:1.2vh;position:relative;z-index:2;flex-shrink:0">' : '') +
+        function makeBar(param, val, color, iconSrc) {
+            return '<div style="display:flex;align-items:center;gap:0.5vh">' +
+                (iconSrc ? '<img src="' + iconSrc + '" style="width:1.2vh;height:1.2vh;flex-shrink:0">' : '<span style="width:1.2vh"></span>') +
+                '<div style="flex:1;height:0.5vh;background:rgba(255,255,255,0.15);border-radius:1vh;overflow:hidden">' +
+                '<div class="sb-fill" data-p="' + param + '" style="width:' + val + '%;height:100%;background:' + color + ';border-radius:1vh;transition:width .3s"></div>' +
+                '</div>' +
+                '<span class="sb-pv" data-p="' + param + '" style="font-family:GothamPro;font-weight:700;font-style:italic;color:#fff;font-size:1.2vh;min-width:2.5vh;text-align:right">' + val + '</span>' +
                 '</div>';
         }
-
-        bars.innerHTML = makeBar('health', '100', icons.health || '') +
-                          makeBar('armour', '0', icons.armour || '') +
-                          makeBar('hunger', '100', icons.hunger || '');
-
+        bars.innerHTML = makeBar('health', '100', '#ed2e2e', icons.health||'') +
+                          makeBar('armour', '0', '#526ee6', icons.armour||'') +
+                          makeBar('hunger', '100', '#ff872e', icons.hunger||'');
         hud.appendChild(bars);
 
         // WANTED
