@@ -178,10 +178,15 @@ function AddHud() {
         cashEl.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;width:2.8vh;height:2.8vh;background:#FFD600;border-radius:0.4vh;font-size:1.8vh;font-style:normal;font-weight:900;color:#000;margin-right:0.8vh">P</span><span id="sbCashVal">0</span>';
         hud.appendChild(cashEl);
 
-        // БАРЫ
+        // БАРЫ (по длине радара 21.9vh, с иконками)
+        var barH = '<div style="flex:1;display:flex;align-items:center;gap:0.4vh;height:1.8vh;position:relative;background:#0000004d;border-radius:0;overflow:hidden"><div class="sb-fill" data-p="__P__" style="width:__W__%;height:100%;position:absolute;top:0;left:0;transition:width .3s"></div><span class="sb-pv" data-p="__P__" style="position:relative;z-index:2;font-family:GothamPro;font-weight:700;font-style:italic;color:#fff;font-size:1.3vh;text-shadow:0 0 0.3vh #000;min-width:3vh;text-align:right">__V__</span><img src="__I__" style="width:1.2vh;height:1.2vh;position:relative;z-index:2;flex-shrink:0"></div>';
         var bars = document.createElement('div');
-        bars.style.cssText = 'position:absolute;bottom:3.4vh;left:5vh;display:flex;gap:0.4vh;align-items:flex-end;width:22vh';
-        bars.innerHTML = '<div style="flex:1;position:relative;height:1.8vh;background:#0000004d;border-radius:0;overflow:hidden"><div class="sb-fill" data-p="health" style="width:100%;height:100%;background:#ed2e2e;transition:width .3s;position:absolute;top:0;left:0"></div><span class="sb-pv" data-p="health" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;font-family:GothamPro;font-weight:700;font-style:italic;color:#fff;font-size:1.3vh;text-shadow:0 0 0.3vh #000">100</span></div><div style="flex:1;position:relative;height:1.8vh;background:#0000004d;border-radius:0;overflow:hidden"><div class="sb-fill" data-p="armour" style="width:0%;height:100%;background:#526ee6;transition:width .3s;position:absolute;top:0;left:0"></div><span class="sb-pv" data-p="armour" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;font-family:GothamPro;font-weight:700;font-style:italic;color:#fff;font-size:1.3vh;text-shadow:0 0 0.3vh #000">0</span></div><div style="flex:1;position:relative;height:1.8vh;background:#0000004d;border-radius:0;overflow:hidden"><div class="sb-fill" data-p="hunger" style="width:100%;height:100%;background:#ff872e;transition:width .3s;position:absolute;top:0;left:0"></div><span class="sb-pv" data-p="hunger" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;font-family:GothamPro;font-weight:700;font-style:italic;color:#fff;font-size:1.3vh;text-shadow:0 0 0.3vh #000">100</span></div><div class="sb-breath" style="display:none;flex:1;position:relative;height:1.8vh;background:#0000004d;border-radius:0;overflow:hidden"><div class="sb-fill" data-p="breath" style="width:100%;height:100%;background:#4fc3f7;transition:width .3s;position:absolute;top:0;left:0"></div><span class="sb-pv" data-p="breath" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;font-family:GothamPro;font-weight:700;font-style:italic;color:#fff;font-size:1.3vh;text-shadow:0 0 0.3vh #000">100</span></div>';
+        bars.style.cssText = 'position:absolute;bottom:3.4vh;left:5vh;display:flex;gap:0.3vh;width:21.9vh';
+        bars.innerHTML = ''
+            + barH.replace(/__P__/g,'health').replace(/__W__/g,'100').replace(/__V__/g,'100').replace(/__I__/g,icons.health||'')
+            + barH.replace(/__P__/g,'armour').replace(/__W__/g,'0').replace(/__V__/g,'0').replace(/__I__/g,icons.armour||'')
+            + barH.replace(/__P__/g,'hunger').replace(/__W__/g,'100').replace(/__V__/g,'100').replace(/__I__/g,icons.hunger||'');
+        bars.innerHTML += '<div class="sb-breath" style="display:none;flex:1;display:flex;align-items:center;gap:0.4vh;height:1.8vh;position:relative;background:#0000004d;border-radius:0;overflow:hidden"><div class="sb-fill" data-p="breath" style="width:100%;height:100%;position:absolute;top:0;left:0;transition:width .3s"></div><span class="sb-pv" data-p="breath" style="position:relative;z-index:2;font-family:GothamPro;font-weight:700;font-style:italic;color:#fff;font-size:1.3vh;text-shadow:0 0 0.3vh #000;min-width:3vh;text-align:right">100</span><img src="' + (icons.breath||'') + '" style="width:1.4vh;height:1.4vh;position:relative;z-index:2;flex-shrink:0"></div>';
         hud.appendChild(bars);
 
         // WANTED
@@ -201,7 +206,7 @@ function AddHud() {
         var timePanel = document.createElement('div');
         timePanel.id = 'sbTimeWrap';
         timePanel.style.cssText = 'position:absolute;bottom:20px;right:20px;display:flex;align-items:center;padding:14px 24px;background:rgba(30,30,20,0.85);border:1px solid rgba(255,215,0,0.25);border-radius:9px;gap:16px;transition:right .4s cubic-bezier(.4,0,.2,1)';
-        timePanel.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="#FFD600"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg><span style="font-family:GothamPro;font-weight:500;font-size:14px;color:#fff" id="sbTime">--:--:--</span><span style="width:1px;height:14px;background:rgba(255,255,255,0.2)"></span><span style="font-family:GothamPro;font-weight:400;font-size:13px;color:#fff" id="sbDate">--.--</span>';
+        timePanel.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="#FFD600" style="flex-shrink:0"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg><span style="font-family:GothamPro;font-weight:500;font-size:14px;color:#fff;min-width:7ch;text-align:center;display:inline-block" id="sbTime">--:--:--</span><span style="width:12px;display:inline-block"></span><span style="font-family:GothamPro;font-weight:400;font-size:13px;color:#fff;min-width:5ch;display:inline-block" id="sbDate">--.--</span>';
         hud.appendChild(timePanel);
 
         document.body.appendChild(hud);
@@ -212,7 +217,7 @@ function AddHud() {
             var star = document.createElement('img');
             star.src = icons.active_wanted || '';
             star.className = 'sb-wanted-star';
-            star.style.cssText = 'width:1.5vh;height:1.2vh;opacity:0.3;transition:opacity .3s';
+            star.style.cssText = 'width:2vh;height:1.6vh;opacity:0.3;transition:opacity .3s';
             wr.appendChild(star);
         }
     }
@@ -353,19 +358,3 @@ function AddHud() {
     window.onInfoChange = onInfoChange;
 }
 AddHud();
-
-// /color
-(function() {
-    if (window.__sbColorInit) return;
-    window.__sbColorInit = true;
-    var colorStyleNode = null;
-    var presets = [{name:'Жёлтый',hex:'#FFD600'},{name:'Розовый',hex:'#FF3676'},{name:'Красный',hex:'#E53935'},{name:'Оранжевый',hex:'#FF9800'},{name:'Зелёный',hex:'#4CAF50'},{name:'Бирюзовый',hex:'#00BCD4'},{name:'Синий',hex:'#2196F3'},{name:'Индиго',hex:'#3F51B5'},{name:'Фиолетовый',hex:'#9C27B0'},{name:'Белый',hex:'#FFFFFF'},{name:'Свой цвет',hex:'custom'}];
-    function sbNotif(t,x){var n=document.createElement('div');n.style.cssText='position:fixed;bottom:40px;right:55px;background:rgba(0,0,0,0.8);color:white;font-family:GothamPro,sans-serif;font-weight:700;padding:8px 12px;border-radius:6px;font-size:12px;z-index:9999;opacity:0;transform:translateX(20px);transition:opacity .3s,transform .3s;pointer-events:none';n.innerHTML='<b>'+t+'</b><br>'+x;document.body.appendChild(n);setTimeout(function(){n.style.opacity='1';n.style.transform='translateX(0)';},10);setTimeout(function(){n.style.opacity='0';n.style.transform='translateX(20px)';setTimeout(function(){n.remove();},300);},3000);}
-    function applyColor(c){if(colorStyleNode)colorStyleNode.remove();var s=document.createElement('style');s.id='sb-color-override';s.textContent='#app .hud-radmir-radar__map{border-color:'+c+' !important}';document.head.appendChild(s);colorStyleNode=s;}
-    function openColorMenu(){var list=presets.map(function(p){return p.name;}).join('<n>');window.addDialogInQueue('[0,2,"Цвет худа","Выберите:","Выбрать","Закрыть",0,0]',list,0);var orig=window.sendClientEvent;window.sendClientEvent=function(){var args=Array.prototype.slice.call(arguments);if(args.includes("OnDialogResponse")){var raw=(args[5]||"").toLowerCase();for(var i=0;i<presets.length;i++){if(raw.includes(presets[i].name.toLowerCase())){if(presets[i].hex==='custom'){setTimeout(openCustomColorMenu,100);}else{applyColor(presets[i].hex);sbNotif("Цвет",presets[i].name);try{localStorage.setItem('sb_hud_color',presets[i].hex);}catch(e){}}break;}}window.sendClientEvent=orig;}return orig.apply(this,args);};}
-    function openCustomColorMenu(){window.addDialogInQueue('[0,1,"Свой цвет","Введите HEX (#FF0000):","Ок","Назад",0,0]',"",0);var orig=window.sendClientEvent;window.sendClientEvent=function(){var args=Array.prototype.slice.call(arguments);if(args.includes("OnDialogResponse")){var input=(args[5]||"").trim().toLowerCase().replace("#","");if(/^[0-9a-f]{3}$/.test(input))input=input.split("").map(function(c){return c+c}).join("");if(/^[0-9a-f]{6}$/.test(input)){applyColor('#'+input);sbNotif("Цвет",'#'+input);try{localStorage.setItem('sb_hud_color','#'+input);}catch(e){}}else sbNotif("Ошибка","Неверный формат");window.sendClientEvent=orig;}return orig.apply(this,args);};}
-    var ci=setInterval(function(){if(!window.sendChatInput)return;clearInterval(ci);var orig=window.sendChatInput;window.sendChatInput=function(){var a=Array.prototype.slice.call(arguments);if(a.join("").trim()==="/color"||a.join("").trim()==="/цвет"){openColorMenu();return;}return orig.apply(this,a);};},500);
-    try{var saved=localStorage.getItem('sb_hud_color');if(saved)applyColor(saved);}catch(e){}
-    window.sbHud.setColor=applyColor;
-    window.sbHud.getColor=function(){return colorStyleNode?true:false;};
-})();
