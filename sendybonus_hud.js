@@ -176,10 +176,10 @@ function AddHud() {
         cashEl.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;width:2.8vh;height:2.8vh;background:#FFD600;border-radius:0.4vh;font-size:1.8vh;font-style:normal;font-weight:900;color:#000;margin-right:0.8vh">P</span><span id="sbCashVal">0</span>';
         hud.appendChild(cashEl);
 
-        // БАРЫ (справа от радара, тонкие, закруглённые, с цветом)
+        // БАРЫ (справа от радара, у правого верхнего угла)
         var bars = document.createElement('div');
         bars.id = 'sbBars';
-        bars.style.cssText = 'position:absolute;bottom:5vh;left:30vh;display:flex;flex-direction:column;gap:0.5vh;width:10vh';
+        bars.style.cssText = 'position:absolute;bottom:20vh;left:33vh;display:flex;flex-direction:column;gap:0.5vh;width:10vh';
 
         function makeBar(param, val, color, iconSrc) {
             return '<div style="display:flex;align-items:center;gap:0.5vh">' +
