@@ -29,101 +29,61 @@ function AddHud() {
 
     var iconBase = 'C:\\Users\\1337\\Desktop\\awr\\legacy bd\\иконки\\';
     var weaponBase = 'C:\\Users\\1337\\Desktop\\awr\\legacy bd\\оружия\\';
-
     var icons = {
-        health: iconBase + 'health.png',
-        armour: iconBase + 'armour.png',
-        hunger: iconBase + 'hunger.png',
-        breath: iconBase + 'breath.png',
-        cash: iconBase + 'cash.png',
-        active_wanted: iconBase + 'active_wanted.png'
+        health: iconBase + 'health.png', armour: iconBase + 'armour.png',
+        hunger: iconBase + 'hunger.png', breath: iconBase + 'breath.png',
+        cash: iconBase + 'cash.png', active_wanted: iconBase + 'active_wanted.png'
     };
-
     var weaponIcons = {};
-    [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,42,43,44,45,46].forEach(function(id) {
-        weaponIcons[id] = weaponBase + id + '.png';
-    });
+    [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,42,43,44,45,46].forEach(function(id) { weaponIcons[id] = weaponBase + id + '.png'; });
 
     function createHud() {
         hudStyleElement = document.createElement("style");
         hudStyleElement.id = "sbHudStyles";
         var css = '';
-        // ===== ШРИФТЫ =====
+        // ШРИФТЫ
         css += '@font-face{font-family:GothamPro;src:url(https://raw.githubusercontent.com/goasdasnda/fonts/main/fonts/GothamPro-Black/GothamPro-Black.ttf) format("truetype");font-weight:900;font-style:normal}\n';
         css += '@font-face{font-family:GothamPro;src:url(https://raw.githubusercontent.com/goasdasnda/fonts/main/fonts/GothamPro-Bold/GothamPro-Bold.ttf) format("truetype");font-weight:700;font-style:normal}\n';
         css += '@font-face{font-family:GothamPro;src:url(https://raw.githubusercontent.com/goasdasnda/fonts/main/fonts/GothamPro-Medium/GothamPro-Medium.ttf) format("truetype");font-weight:500;font-style:normal}\n';
         css += '@font-face{font-family:GothamPro;src:url(https://raw.githubusercontent.com/goasdasnda/fonts/main/fonts/GothamPro-Regular/GothamPro.ttf) format("truetype");font-weight:400;font-style:normal}\n';
         css += '@font-face{font-family:GothamPro;src:url(https://raw.githubusercontent.com/goasdasnda/fonts/main/fonts/GothamPro-Light/GothamPro-Light.ttf) format("truetype");font-weight:300;font-style:normal}\n';
         css += '@font-face{font-family:GothamPro;src:url(https://raw.githubusercontent.com/goasdasnda/fonts/main/fonts/GothamPro-LightItalic/GothamPro-LightItalic.ttf) format("truetype");font-weight:300;font-style:italic}\n';
-        // ===== СКРЫТИЕ ДЕФОЛТНЫХ ЭЛЕМЕНТОВ =====
-        css += '#app .hud-radmir-wanted{display:none}\n';
-        css += 'body #app .hud-radmir-info{display:none}\n';
-        css += '.hud-hassle-map .map-mask{display:none}\n';
-        css += '#app .hud-radmir-radar__radar-border{display:none !important}\n';
-        css += '#app .hud-radmir-radar__radar-border_new-year{display:none !important}\n';
-        css += '#app .hud-radmir-radar__radar-border_helloween{display:none !important}\n';
-        css += '#app .hud-radmir-radar__radar-bats{display:none !important}\n';
-        // ===== РАДАР =====
-        css += '#app .hud-radmir-radar__map{border-radius:0 !important;border:0.2vh solid #FFD600 !important}\n';
-        css += '#app .hud-radmir-radar{left:5vh !important;bottom:4vh !important}\n';
-        // ===== АВТОРИЗАЦИЯ (встроена в стиль худа) =====
-        css += '#app .authorization{background:0 0;display:flex;justify-content:center;align-items:center;height:100vh;margin-top:-8vh;animation:sbSlideDown .5s ease-out forwards}\n';
-        css += '@keyframes sbSlideDown{0%{opacity:0;transform:translateY(-4vh)}100%{opacity:1;transform:translateY(0)}}\n';
+        // СКРЫТИЕ ДЕФОЛТА
+        css += '#app .hud-radmir-wanted{display:none}body #app .hud-radmir-info{display:none}.hud-hassle-map .map-mask{display:none}#app .hud-radmir-radar__radar-border{display:none !important}#app .hud-radmir-radar__radar-border_new-year{display:none !important}#app .hud-radmir-radar__radar-border_helloween{display:none !important}#app .hud-radmir-radar__radar-bats{display:none !important}\n';
+        // РАДАР
+        css += '#app .hud-radmir-radar__map{border-radius:0 !important;border:0.2vh solid #FFD600 !important}#app .hud-radmir-radar{left:5vh !important;bottom:4vh !important}\n';
+        // АВТОРИЗАЦИЯ
+        css += '#app .authorization{background:0 0;display:flex;justify-content:center;align-items:center;height:100vh;margin-top:-8vh;animation:sbSD .5s ease-out forwards}@keyframes sbSD{0%{opacity:0;transform:translateY(-4vh)}100%{opacity:1;transform:translateY(0)}}\n';
         css += '#app .login-auth:before,#app .login-code:before,#app .registration:before{content:"";background-image:url(hud/авторизация.png);background-size:cover;width:100vw;height:100vh;position:absolute;top:0;left:0;z-index:0;opacity:0.999}\n';
-        css += '#app .authorization-field{height:4.63vh;box-sizing:border-box;border:.19vh solid #ffffff91;border-radius:.74vh;color:#ffffffd6;font-size:1.3vh;width:46.48vh;position:relative;font-weight:400;background:#00000054;font-family:GothamPro,sans-serif}\n';
-        css += '#app .authorization-field__input{color:#ffffffd6 !important;font-size:1.3vh;border:none !important;font-family:GothamPro,sans-serif}\n';
+        css += '#app .authorization-field{height:4.63vh;box-sizing:border-box;border:.19vh solid #ffffff91;border-radius:.74vh;color:#ffffffd6;font-size:1.3vh;width:46.48vh;position:relative;font-weight:400;background:#00000054;font-family:GothamPro,sans-serif}#app .authorization-field__input{color:#ffffffd6 !important;font-size:1.3vh;border:none !important;font-family:GothamPro,sans-serif}\n';
         css += '#app .login-form__button,#app .registration-form__button{padding:0 4.63vh;height:6.11vh;border-radius:.74vh;line-height:6.11vh;font-size:2.04vh;font-weight:500;width:17vh;margin-left:50%;left:50%;transform:translateX(-50%)}\n';
-        // ===== СПИДОМЕТР (встроен в стиль худа) =====
-        css += 'body #app .hud-radmir-speedometer-secondary__data__before{background-image:none}\n';
-        css += 'body #app .hud-radmir-speedometer__after{display:none}\n';
-        css += 'body #app .hud-radmir-speedometer{right:1.2vh;bottom:1.5vh;padding-right:1vh;transition:none !important}\n';
-        css += 'body #app .hud-radmir-speedometer-main__hidden{opacity:1}\n';
+        // СПИДОМЕТР
+        css += 'body #app .hud-radmir-speedometer-secondary__data__before{background-image:none}body #app .hud-radmir-speedometer__after{display:none}body #app .hud-radmir-speedometer{right:1.2vh;bottom:1.5vh;padding-right:1vh;transition:none !important}body #app .hud-radmir-speedometer-main__hidden{opacity:1}\n';
         css += 'body #app .hud-radmir-speedometer:after{content:"";position:absolute;width:32vh;height:8vh;background:#000000cc;border-radius:.7vh;right:1vh;bottom:1vh;z-index:-1}\n';
-        css += 'body #app .hud-radmir-speedometer-hint{width:0;height:0;background-image:none;display:none}\n';
-        css += 'body #app .hud-radmir-speedometer__new-year{display:none}\n';
-        css += 'body #app .hud-radmir-speedometer-main__speed{width:32vh;height:8vh}\n';
-        css += 'body #app .hud-radmir-speedometer-main__turns{display:none}\n';
-        css += 'body #app .hud-radmir-speedometer-main__speed-fill{display:none}\n';
-        css += 'body #app .hud-radmir-speedometer-main__data{flex-direction:row !important;padding:0;margin:0;position:absolute;top:-3vh;left:1vh}\n';
-        css += 'body #app .hud-radmir-speedometer-main__data-value{font-weight:700;font-size:3vh;color:#fff;text-shadow:none;font-family:GothamPro;font-style:normal;text-align:left}\n';
-        css += 'body #app .hud-radmir-speedometer-main__data-text{font-weight:700;font-size:2vh;text-shadow:none;font-family:GothamPro;font-style:normal;color:#bdbdbd;margin-left:.5vh;margin-top:0}\n';
-        css += 'body #app .hud-radmir-speedometer-indicators{width:5.3vh;height:5.3vh;margin-left:0;margin-top:0;position:absolute;display:flex;bottom:2.5vh;right:1vh;gap:1.8vh}\n';
-        css += 'body #app .hud-radmir-speedometer-indicators__item{width:4vh;height:4vh;margin-right:1vh !important}\n';
-        css += 'body #app .hud-radmir-speedometer-indicators__item svg path{fill:#fff !important}\n';
-        css += 'body #app .hud-radmir-speedometer-mileage{height:2vh;bottom:1.96vh;right:1vh;padding:0;-webkit-mask-image:none !important;mask-image:none !important}\n';
-        css += 'body #app .hud-radmir-speedometer-mileage__container{grid-template-columns:repeat(7,1.4vh);gap:.9vh;grid-gap:0vh}\n';
-        css += 'body #app .hud-radmir-speedometer-mileage__item{border-bottom:none;height:1.3vh;padding-bottom:2vh;margin-right:.15vh}\n';
-        css += 'body #app .hud-radmir-speedometer-mileage__item-value{font-weight:300;font-size:1.9vh;line-height:1.86vh;color:#fff;text-shadow:none;font-family:GothamPro;font-style:normal;transition:none !important}\n';
-        css += '#app .hud-radmir-speedometer-secondary{width:11vh;height:2.5vh;display:flex;align-items:center;position:absolute;left:-2vh;bottom:2.1vh}\n';
-        css += 'body #app .hud-radmir-speedometer-secondary__fuel{padding:0;position:relative;left:0;top:0}\n';
-        css += 'body #app .hud-radmir-speedometer-secondary__fill{display:none}\n';
-        css += 'body #app .hud-radmir-speedometer-secondary__data-value{font-family:GothamPro;font-weight:400;font-size:2.2vh;color:#fff;text-shadow:none}\n';
-        css += 'body #app .hud-radmir-speedometer-secondary__data-text{display:none}\n';
-        // ===== ВРЕМЯ СДВИГАЕТСЯ КОГДА СПИДОМЕТР ВИДЕН =====
-        css += 'body #app .hud-radmir-speedometer ~ #sbTimeWrap{right:35vh !important;transition:right .3s}\n';
-        css += '#sbTimeWrap{transition:right .3s}\n';
-        // ===== МОДАЛКИ =====
-        css += '#app .modal-container-wrapper{background:rgba(0,0,0,0.8) !important;border:0.19vh solid #ffffff0d;border-radius:2.5vh !important}\n';
-        css += '#app .modal-light__light,#app .modal-light__light_second,#app .modal-overlay{background:none !important}\n';
-        // ===== ЧАТ =====
-        css += '#app .radmir-chat-input__input{background:rgba(0,0,0,0.8) !important;border-radius:11px !important;border:1px solid rgba(255,255,255,0.08) !important}\n';
-        css += '#app .radmir-chat-input__input input{margin-left:.9vh !important;color:#fff !important}\n';
-        // ===== ИНВЕНТАРЬ =====
-        css += '#app .inventory{background:none}\n';
-        css += '#app .inventory-container__info__container{background:rgba(0,0,0,0.8) !important;border-radius:1.1vh}\n';
-        css += '#app .inventory-extra__container,#app .inventory-main{background:rgba(0,0,0,0.8);border-radius:1.1vh;padding:2vh}\n';
-        css += '#app .inventory-main__after,#app .inventory-main__before{display:none}\n';
-        // ===== ТРЕЙД =====
-        css += '#app .trade-items{background:none}\n';
-        css += '#app .trade-items__container{border-radius:10px;background:rgba(0,0,0,0.8) !important}\n';
-        // ===== ТОПЛИВО =====
-        css += '#app .fuel__container{background:rgba(0,0,0,0.8);padding:3.33vh 2.96vh}\n';
-        // ===== СМЕРТЬ =====
-        css += '#app .death{font-style:italic;background:rgba(0,0,0,0.74) !important}\n';
-        // ===== РАДИАЛЬНОЕ =====
-        css += '#app .player-interaction__container{background:rgba(0,0,0,0.8);border:none}\n';
-        css += '#app .player-interaction__title,.player-interaction__title_active{color:#fff !important}\n';
-        css += '#app .player-interaction__icon{fill:white}\n';
+        css += 'body #app .hud-radmir-speedometer-hint{width:0;height:0;background-image:none;display:none}body #app .hud-radmir-speedometer__new-year{display:none}body #app .hud-radmir-speedometer-main__speed{width:32vh;height:8vh}body #app .hud-radmir-speedometer-main__turns{display:none}body #app .hud-radmir-speedometer-main__speed-fill{display:none}\n';
+        css += 'body #app .hud-radmir-speedometer-main__data{flex-direction:row !important;padding:0;margin:0;position:absolute;top:-3vh;left:1vh}body #app .hud-radmir-speedometer-main__data-value{font-weight:700;font-size:3vh;color:#fff;text-shadow:none;font-family:GothamPro;font-style:normal;text-align:left}body #app .hud-radmir-speedometer-main__data-text{font-weight:700;font-size:2vh;text-shadow:none;font-family:GothamPro;font-style:normal;color:#bdbdbd;margin-left:.5vh;margin-top:0}\n';
+        css += 'body #app .hud-radmir-speedometer-indicators{width:5.3vh;height:5.3vh;margin-left:0;margin-top:0;position:absolute;display:flex;bottom:2.5vh;right:1vh;gap:1.8vh}body #app .hud-radmir-speedometer-indicators__item{width:4vh;height:4vh;margin-right:1vh !important}body #app .hud-radmir-speedometer-indicators__item svg path{fill:#fff !important}\n';
+        css += 'body #app .hud-radmir-speedometer-mileage{height:2vh;bottom:1.96vh;right:1vh;padding:0;-webkit-mask-image:none !important;mask-image:none !important}body #app .hud-radmir-speedometer-mileage__container{grid-template-columns:repeat(7,1.4vh);gap:.9vh;grid-gap:0vh}body #app .hud-radmir-speedometer-mileage__item{border-bottom:none;height:1.3vh;padding-bottom:2vh;margin-right:.15vh}body #app .hud-radmir-speedometer-mileage__item-value{font-weight:300;font-size:1.9vh;line-height:1.86vh;color:#fff;text-shadow:none;font-family:GothamPro;font-style:normal;transition:none !important}\n';
+        css += '#app .hud-radmir-speedometer-secondary{width:11vh;height:2.5vh;display:flex;align-items:center;position:absolute;left:-2vh;bottom:2.1vh}body #app .hud-radmir-speedometer-secondary__fuel{padding:0;position:relative;left:0;top:0}body #app .hud-radmir-speedometer-secondary__fill{display:none}body #app .hud-radmir-speedometer-secondary__data-value{font-family:GothamPro;font-weight:400;font-size:2.2vh;color:#fff;text-shadow:none}body #app .hud-radmir-speedometer-secondary__data-text{display:none}\n';
+        // ИНТЕРФЕЙСЫ (белый + жёлтый акцент)
+        css += 'body .info-card{background:rgba(0,0,0,0.7);border-radius:31px !important}body .info-card__data{background:rgba(0,0,0,0.6);border-radius:31px}body .info-card .text{color:#cfcfcf}\n';
+        css += '#app .modal-container-wrapper{background:rgba(0,0,0,0.8) !important;border:0.19vh solid #FFD60020;border-radius:2.5vh !important}#app .modal_violet .modal-container{border-top:none !important}#app .modal-light__light,#app .modal-light__light_second,#app .modal-overlay{background:none !important}#app .modal_violet .modal-container-wrapper,#app .modal_orange .modal-container-wrapper,#app .modal_green .modal-container-wrapper,#app .modal_red .modal-container-wrapper,#app .modal_dark-orange .modal-container-wrapper{box-shadow:none !important}#app .modal_violet .modal-container,#app .modal_orange .modal-container,#app .modal_green .modal-container,#app .modal_red .modal-container,#app .modal_dark-orange .modal-container{border-top:none !important}\n';
+        css += 'body .window-bg{background-image:none}body .window__before{background-image:none}body .window__title{text-align:center;color:#fff}\n';
+        css += 'body .window-table__item{color:#fff;border-radius:2vh;border:.09vh solid #ffffff00;transition:.25s}body .window-table__item:before{border-radius:3vh;background:linear-gradient(rgba(59,59,59,0.161),rgba(59,59,59,0.161))}body .window-table__item:after{background:rgba(59,59,59,0.161);border-radius:3vh}body .window-table__item.selected{background:#FFD600;color:#000;border:.09vh solid #FFD600}body .window-table__item:hover{background:#ffffff50}body .window-table__item.selected:hover{background:#FFD600;color:#000}\n';
+        css += 'body .window-button{border-radius:2vh;color:#fff;background:rgba(59,59,59,0.161)}#app .window-button:hover{color:#000;background:#FFD600}#app .window-button:first-child{background:#FFD600 !important}#app .window-button:first-child:hover{background:#fff !important}\n';
+        css += '.graffiti-pattern__image[data-v-38ff9a6b]{background:none !important}\n';
+        // ЧАТ
+        css += '#app .radmir-chat-input__input{background:rgba(0,0,0,0.8) !important;border-radius:11px !important;border:1px solid rgba(255,215,0,0.15) !important}#app .radmir-chat-input__input input::selection{background-color:#FFD60040}#app .radmir-chat-input__input input{margin-left:.9vh !important}#app .radmir-chat-input__input-lang{margin-right:1vh !important}#app .controls-button{border-radius:.5vh}\n';
+        // ТРЕЙД
+        css += '#app .trade-items__container{border-radius:10px;height:613px;width:1283px;background:rgba(0,0,0,0.74) !important}#app .trade-items{background:none}#app .trade-items-main{right:-1.2vw;top:-2vh}\n';
+        // ИНВЕНТАРЬ
+        css += '#app .inventory{background:none}#app .inventory-container__info__container{background:rgba(0,0,0,0.8) !important;border-radius:1.1vh}#app .inventory-action__modal,#app .inventory-extra__container,#app .inventory-main{background:rgba(0,0,0,0.8)}#app .inventory-main__after,#app .inventory-main__before{display:none}#app .inventory-extra__container,#app .inventory-main{padding:2vh;background:rgba(0,0,0,0.8);border-radius:1.1vh;border:0}#app .inventory-player{border:none}#app .inventory-capacity,#app .inventory-container__box{border-radius:1vh;border:.1vh solid #FFD60026;background:radial-gradient(#00000003,#FFD60015 150%)}#app .inventory-container__slot{border-radius:1vh;background:radial-gradient(#00000003,#ffffff33)}#app .inventory-capacity__bar,#app .inventory-wear__bar{background:#FFD60033;border-radius:1vh;width:100%}#app .inventory-container__slot:before{border-radius:1vh;border:.1vh solid #FFD600;background:radial-gradient(#00000003,#ffffffcc 150%)}#app .inventory-action__modal{padding:2vh;background:rgba(0,0,0,0.8);border-radius:1.1vh}\n';
+        // ТОПЛИВО
+        css += '#app .fuel__container{background:rgba(0,0,0,0.8);padding:3.33vh 2.96vh}#app .fuel__button{background:linear-gradient(185.93deg,#FFD600 -22.13%,#FFB800 122.51%) !important;color:#000 !important}#app .fuel__class-col.selected,.fuel__class-col:hover{background:#FFD600 !important;color:#000 !important}#app .fuel__fill .range-slider-fill{background-color:#FFD600 !important}#app .fuel__fill .range-slider-knob{background:#FFD600 !important}\n';
+        // СМЕРТЬ
+        css += '#app .death{font-style:italic;background:rgba(0,0,0,0.74) !important}#app .death-timer{font-style:italic}\n';
+        // РАДИАЛЬНОЕ МЕНЮ
+        css += '#app .player-interaction__container{background:rgba(0,0,0,0.8);border:none}#app .player-interaction__title,.player-interaction__title_active{color:#fff !important}#app .player-interaction__icon{fill:white}#app .player-interaction-favorite{background:rgba(0,0,0,0.8)}#app .player-interaction-favorite:hover{background:rgba(255,215,0,0.2)}#app .player-interaction__container:after,.player-interaction__container:before{background:0 0 !important}#app .container{background:rgba(0,0,0,0.8)}#app .vue3-slider .track-filled,.vue3-slider .handle{background-color:#FFD600 !important}\n';
         hudStyleElement.innerHTML = css;
         document.head.appendChild(hudStyleElement);
 
@@ -131,63 +91,64 @@ function AddHud() {
         hud.id = 'sbHudContainer';
         hud.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;font-family:GothamPro,sans-serif';
 
-        // ====== ЛОГО ======
+        // ЛОГО
         var logo = document.createElement('div');
         logo.style.cssText = 'position:absolute;top:15px;right:20px;text-align:right';
         logo.innerHTML = '<div style="font-family:GothamPro;font-weight:900;font-size:3.2vh;line-height:1;text-shadow:0 2px 8px rgba(0,0,0,0.5)"><span style="color:#fff">SENDY</span><span style="color:#FFD600">BONUS</span></div>';
         hud.appendChild(logo);
 
-        // ====== ДЕНЬГИ ======
+        // ДЕНЬГИ (ниже логотипа)
         var cashEl = document.createElement('div');
-        cashEl.style.cssText = 'position:absolute;top:5vh;right:20px;text-align:right;display:flex;align-items:center;justify-content:flex-end;color:white;font-family:GothamPro;font-weight:900;font-style:italic;font-size:2.59vh;text-shadow:0 0 .46vh #000000cb';
+        cashEl.style.cssText = 'position:absolute;top:5.5vh;right:20px;text-align:right;display:flex;align-items:center;justify-content:flex-end;color:white;font-family:GothamPro;font-weight:900;font-style:italic;font-size:2.59vh;text-shadow:0 0 .46vh #000000cb';
         cashEl.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;width:2.8vh;height:2.8vh;background:#FFD600;border-radius:0.4vh;font-size:1.8vh;font-style:normal;font-weight:900;color:#000;margin-right:0.8vh">Р</span><span id="sbCashVal">0</span>';
         hud.appendChild(cashEl);
 
-        // ====== БАРЫ (выравнивание по правому краю, числа слева от бара) ======
+        // БАРЫ (числа справа, бар слева, прижаты к правому краю)
         var bars = document.createElement('div');
-        bars.style.cssText = 'position:absolute;top:7.5vh;right:20px;display:flex;flex-direction:column;gap:0.5vh;align-items:flex-end';
+        bars.style.cssText = 'position:absolute;top:8vh;right:20px;display:flex;flex-direction:column;gap:0.5vh;align-items:flex-end';
         bars.innerHTML = '' +
-            '<div style="display:flex;align-items:center;gap:0.5vh;flex-direction:row-reverse"><span class="sb-pv" data-p="health" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;width:3vh;font-size:1.5vh;text-align:right">100</span><div style="width:9.4vh;height:0.4vh;background:#0000004d;border-radius:0"><div class="sb-fill" data-p="health" style="width:100%;height:100%;background:#ed2e2e;transition:width .3s"></div></div><img src="' + icons.health + '" style="width:1.4vh;height:1.2vh"></div>' +
-            '<div style="display:flex;align-items:center;gap:0.5vh;flex-direction:row-reverse"><span class="sb-pv" data-p="armour" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;width:3vh;font-size:1.5vh;text-align:right">0</span><div style="width:9.4vh;height:0.4vh;background:#0000004d;border-radius:0"><div class="sb-fill" data-p="armour" style="width:0%;height:100%;background:#526ee6;transition:width .3s"></div></div><img src="' + icons.armour + '" style="width:1.4vh;height:1.4vh"></div>' +
-            '<div style="display:flex;align-items:center;gap:0.5vh;flex-direction:row-reverse"><span class="sb-pv" data-p="hunger" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;width:3vh;font-size:1.5vh;text-align:right">100</span><div style="width:9.4vh;height:0.4vh;background:#0000004d;border-radius:0"><div class="sb-fill" data-p="hunger" style="width:100%;height:100%;background:#ff872e;transition:width .3s"></div></div><img src="' + icons.hunger + '" style="width:0.9vh;height:1.1vh"></div>' +
-            '<div class="sb-breath" style="display:none;align-items:center;gap:0.5vh;flex-direction:row-reverse"><span class="sb-pv" data-p="breath" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;width:3vh;font-size:1.5vh;text-align:right">100</span><div style="width:9.4vh;height:0.4vh;background:#0000004d;border-radius:0"><div class="sb-fill" data-p="breath" style="width:100%;height:100%;background:#4fc3f7;transition:width .3s"></div></div><img src="' + icons.breath + '" style="width:1.7vh;height:1.7vh"></div>';
+            '<div style="display:flex;align-items:center;gap:0.5vh"><div style="width:9.4vh;height:0.4vh;background:#0000004d;border-radius:0"><div class="sb-fill" data-p="health" style="width:100%;height:100%;background:#ed2e2e;transition:width .3s"></div></div><span class="sb-pv" data-p="health" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;width:3vh;font-size:1.5vh">100</span><img src="' + icons.health + '" style="width:1.4vh;height:1.2vh"></div>' +
+            '<div style="display:flex;align-items:center;gap:0.5vh"><div style="width:9.4vh;height:0.4vh;background:#0000004d;border-radius:0"><div class="sb-fill" data-p="armour" style="width:0%;height:100%;background:#526ee6;transition:width .3s"></div></div><span class="sb-pv" data-p="armour" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;width:3vh;font-size:1.5vh">0</span><img src="' + icons.armour + '" style="width:1.4vh;height:1.4vh"></div>' +
+            '<div style="display:flex;align-items:center;gap:0.5vh"><div style="width:9.4vh;height:0.4vh;background:#0000004d;border-radius:0"><div class="sb-fill" data-p="hunger" style="width:100%;height:100%;background:#ff872e;transition:width .3s"></div></div><span class="sb-pv" data-p="hunger" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;width:3vh;font-size:1.5vh">100</span><img src="' + icons.hunger + '" style="width:0.9vh;height:1.1vh"></div>' +
+            '<div class="sb-breath" style="display:none;align-items:center;gap:0.5vh"><div style="width:9.4vh;height:0.4vh;background:#0000004d;border-radius:0"><div class="sb-fill" data-p="breath" style="width:100%;height:100%;background:#4fc3f7;transition:width .3s"></div></div><span class="sb-pv" data-p="breath" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;width:3vh;font-size:1.5vh">100</span><img src="' + icons.breath + '" style="width:1.7vh;height:1.7vh"></div>';
         hud.appendChild(bars);
 
-        // ====== WANTED ======
+        // WANTED
         var wantedWrap = document.createElement('div');
         wantedWrap.id = 'sbWantedWrap';
-        wantedWrap.style.cssText = 'position:absolute;top:14vh;right:20px;display:none;align-items:center;gap:0.2vh';
+        wantedWrap.style.cssText = 'position:absolute;top:14.5vh;right:20px;display:none;align-items:center;gap:0.2vh';
         hud.appendChild(wantedWrap);
 
-        // ====== ОРУЖИЕ (справа внизу) ======
+        // ОРУЖИЕ
         var weaponWrap = document.createElement('div');
         weaponWrap.id = 'sbWeaponWrap';
         weaponWrap.style.cssText = 'position:absolute;bottom:65px;right:20px;display:none;align-items:center;gap:8px;padding:6px 14px;background:rgba(7,16,48,0.62);border-radius:9px';
         weaponWrap.innerHTML = '<img id="sbWeaponIcon" src="" style="width:5vh;height:2.5vh;object-fit:contain"><div style="display:flex;align-items:baseline;gap:2px"><span style="font-family:GothamPro;font-weight:700;font-style:italic;font-size:1.3vh;color:#fff" id="sbAmmoInClip">0</span><span style="font-family:GothamPro;font-weight:300;font-style:italic;font-size:0.9vh;color:rgba(255,255,255,0.5)" id="sbAmmoTotal">/0</span></div>';
         hud.appendChild(weaponWrap);
 
-        // ====== ВРЕМЯ + ДАТА (сдвигается когда спидометр виден) ======
+        // ВРЕМЯ (без жёлтого)
         var timePanel = document.createElement('div');
         timePanel.id = 'sbTimeWrap';
         timePanel.style.cssText = 'position:absolute;bottom:20px;right:20px;display:flex;align-items:center;padding:12px 20px;background:rgba(7,16,48,0.62);border-radius:9px;gap:10px;transition:right .3s';
         timePanel.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg><span style="font-family:GothamPro;font-weight:500;font-size:14px;color:#fff" id="sbTime">--:--</span><span style="font-family:GothamPro;font-weight:500;font-size:14px;color:#7B93D1" id="sbDate">--.--</span>';
         hud.appendChild(timePanel);
 
-        // ====== ID + ONLINE ======
+        // ID + ONLINE (получаются с сервера)
         var cards = document.createElement('div');
+        cards.id = 'sbCards';
         cards.style.cssText = 'position:absolute;bottom:4vh;left:calc(5vh + 22vh + 1.5vh);display:flex;flex-direction:column;gap:0.4vh';
-        cards.innerHTML = '<div style="display:flex;align-items:center;gap:0.4vh;padding:0.3vh 0.7vh;background:rgba(0,0,0,0.4);border-radius:0.4vh;font-family:GothamPro;font-size:1.3vh;color:#fff"><span style="color:#FFD600;font-weight:700">ID</span><span style="font-weight:500" id="sbPlayerId">0</span></div><div style="display:flex;align-items:center;gap:0.4vh;padding:0.3vh 0.7vh;background:rgba(0,0,0,0.4);border-radius:0.4vh;font-family:GothamPro;font-size:1.3vh;color:#fff"><svg width="1.2vh" height="1.2vh" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span id="sbOnlineCount" style="font-weight:500">0</span></div>';
+        cards.innerHTML = '<div style="display:flex;align-items:center;gap:0.4vh;padding:0.3vh 0.7vh;background:rgba(0,0,0,0.4);border-radius:0.4vh;font-family:GothamPro;font-size:1.3vh;color:#fff"><span style="color:#FFD600;font-weight:700">ID</span><span style="font-weight:500" id="sbPlayerId">—</span></div><div style="display:flex;align-items:center;gap:0.4vh;padding:0.3vh 0.7vh;background:rgba(0,0,0,0.4);border-radius:0.4vh;font-family:GothamPro;font-size:1.3vh;color:#fff"><svg width="1.2vh" height="1.2vh" viewBox="0 0 24 24" fill="#FFD600"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span id="sbOnlineCount" style="font-weight:500">—</span></div>';
         hud.appendChild(cards);
 
-        // ====== ПОДСКАЗКИ ======
+        // ПОДСКАЗКИ (ниже радара, не залезают)
         var help = document.createElement('div');
-        help.style.cssText = 'position:absolute;bottom:1.2vh;left:calc(5vh + 22vh + 1.5vh);display:flex;flex-direction:column;gap:0.3vh;font-family:GothamPro;font-size:1.1vh;color:rgba(255,255,255,0.6);text-shadow:1px 1px 3px #000';
+        help.style.cssText = 'position:absolute;bottom:4vh;left:calc(5vh + 22vh + 1.5vh);margin-top:4.5vh;display:flex;flex-direction:column;gap:0.3vh;font-family:GothamPro;font-size:1.1vh;color:rgba(255,255,255,0.6);text-shadow:1px 1px 3px #000';
         help.innerHTML = '<div style="display:flex;align-items:center;gap:0.4vh"><span style="padding:0.15vh 0.3vh;background:rgba(0,0,0,0.4);border-radius:0.3vh">M</span> Меню</div><div style="display:flex;align-items:center;gap:0.4vh"><span style="padding:0.15vh 0.3vh;background:rgba(0,0,0,0.4);border-radius:0.3vh">I</span> Инвентарь</div><div style="display:flex;align-items:center;gap:0.4vh"><span style="padding:0.15vh 0.3vh;background:rgba(0,0,0,0.4);border-radius:0.3vh">X</span> Голос</div><div style="display:flex;align-items:center;gap:0.4vh"><span style="padding:0.15vh 0.3vh;background:rgba(0,0,0,0.4);border-radius:0.3vh">Z</span> Анимации</div><div style="display:flex;align-items:center;gap:0.4vh"><span style="padding:0.15vh 0.3vh;background:rgba(0,0,0,0.4);border-radius:0.3vh">F1</span> Помощь</div>';
         hud.appendChild(help);
 
         document.body.appendChild(hud);
 
-        // Wanted stars
+        // Wanted
         var wr = document.getElementById('sbWantedWrap');
         for (var w = 0; w < 6; w++) {
             var star = document.createElement('img');
@@ -198,37 +159,23 @@ function AddHud() {
         }
     }
 
-    // ============ Update Handlers ============
     var updateFunctions = {
         show: function(v) { var el = document.getElementById('sbHudContainer'); if (el) el.style.display = +v >= 1 ? '' : 'none'; },
         showBars: function(v) { updateFunctions.show(v); },
         health: function(v) { updateBar('health', v); },
         armour: function(v) { updateBar('armour', v); },
         hunger: function(v) { updateBar('hunger', v); },
-        breath: function(v) {
-            var b = document.querySelector('.sb-breath');
-            if (b) b.style.display = v < 99 ? 'flex' : 'none';
-            updateBar('breath', v);
-        },
+        breath: function(v) { var b = document.querySelector('.sb-breath'); if (b) b.style.display = v < 99 ? 'flex' : 'none'; updateBar('breath', v); },
         money: function(v) { var el = document.getElementById('sbCashVal'); if (el) el.textContent = formatNumberWithDots(v); },
-        weapon: function(v) {
-            var icon = document.getElementById('sbWeaponIcon');
-            var wrap = document.getElementById('sbWeaponWrap');
-            if (icon && weaponIcons[v]) icon.src = weaponIcons[v];
-            if (wrap) wrap.style.display = v >= 1 ? 'flex' : 'none';
-        },
+        weapon: function(v) { var icon = document.getElementById('sbWeaponIcon'); var wrap = document.getElementById('sbWeaponWrap'); if (icon && weaponIcons[v]) icon.src = weaponIcons[v]; if (wrap) wrap.style.display = v >= 1 ? 'flex' : 'none'; },
         ammoInClip: function(v) { var el = document.getElementById('sbAmmoInClip'); if (el) el.textContent = v; },
         totalAmmo: function(v) { var el = document.getElementById('sbAmmoTotal'); if (el) el.textContent = '/' + v; },
-        wanted: function(v) {
-            var stars = document.querySelectorAll('.sb-wanted-star');
-            var level = Math.min(v, 6);
-            stars.forEach(function(s, i) { s.style.opacity = i < level ? '1' : '0.3'; });
-            var wrap = document.getElementById('sbWantedWrap');
-            if (wrap) wrap.style.display = level > 0 ? 'flex' : 'none';
-        },
+        wanted: function(v) { var stars = document.querySelectorAll('.sb-wanted-star'); var level = Math.min(v, 6); stars.forEach(function(s, i) { s.style.opacity = i < level ? '1' : '0.3'; }); var wrap = document.getElementById('sbWantedWrap'); if (wrap) wrap.style.display = level > 0 ? 'flex' : 'none'; },
         freeze: function(v) {},
         server: function(id) {},
-        bonus: function(v) {}
+        bonus: function(v) {},
+        playerId: function(v) { var el = document.getElementById('sbPlayerId'); if (el) el.textContent = v; },
+        online: function(v) { var el = document.getElementById('sbOnlineCount'); if (el) el.textContent = v; }
     };
 
     function updateBar(param, value) {
@@ -241,18 +188,13 @@ function AddHud() {
     function startClock() {
         setInterval(function() {
             var now = new Date();
-            var h = String(now.getHours()).padStart(2, '0');
-            var m = String(now.getMinutes()).padStart(2, '0');
-            var d = String(now.getDate()).padStart(2, '0');
-            var mo = String(now.getMonth() + 1).padStart(2, '0');
             var timeEl = document.getElementById('sbTime');
             var dateEl = document.getElementById('sbDate');
-            if (timeEl) timeEl.textContent = h + ':' + m;
-            if (dateEl) dateEl.textContent = d + '.' + mo;
+            if (timeEl) timeEl.textContent = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+            if (dateEl) dateEl.textContent = String(now.getDate()).padStart(2, '0') + '.' + String(now.getMonth() + 1).padStart(2, '0');
         }, 1000);
     }
 
-    // Сдвиг времени когда спидометр виден
     function observeSpeedometer() {
         var timeWrap = document.getElementById('sbTimeWrap');
         if (!timeWrap) return;
@@ -261,12 +203,11 @@ function AddHud() {
             if (speedo) {
                 clearInterval(check);
                 var observer = new MutationObserver(function() {
-                    var visible = speedo.offsetParent !== null && getComputedStyle(speedo).display !== 'none';
+                    var visible = getComputedStyle(speedo).display !== 'none' && speedo.offsetParent !== null;
                     timeWrap.style.right = visible ? '35vh' : '20px';
                 });
                 observer.observe(speedo, { attributes: true, attributeFilter: ['style', 'class'] });
-                // Начальная проверка
-                var visible = speedo.offsetParent !== null && getComputedStyle(speedo).display !== 'none';
+                var visible = getComputedStyle(speedo).display !== 'none' && speedo.offsetParent !== null;
                 timeWrap.style.right = visible ? '35vh' : '20px';
             }
         }, 200);
@@ -306,7 +247,7 @@ function AddHud() {
                 createHud();
                 startClock();
                 observeSpeedometer();
-                var props = ['health','armour','hunger','breath','money','wanted','ammoInClip','totalAmmo','freeze','weapon','show'];
+                var props = ['health','armour','hunger','breath','money','wanted','ammoInClip','totalAmmo','freeze','weapon','show','playerId','online'];
                 props.forEach(function(p) { if (p in hudInfo && updateFunctions[p]) updateFunctions[p](hudInfo[p]); });
                 if ('server' in window.interface("Hud")) updateFunctions.server(window.interface("Hud").server);
                 if ('bonus' in window.interface("Hud")) updateFunctions.bonus(window.interface("Hud").bonus);
