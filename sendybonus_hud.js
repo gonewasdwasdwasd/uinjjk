@@ -157,7 +157,7 @@ function AddHud() {
 
         // BARS (full radar width, bottom of radar)
         var bars = document.createElement('div');
-        bars.style.cssText = 'position:absolute;bottom:3.4vh;left:5vh;display:flex;gap:0.4vh;align-items:flex-end;width:22vh';
+        bars.style.cssText = 'position:absolute;bottom:3.4vh;left:5vh;display:flex;gap:0.4vh;align-items:flex-end;width:22.4vh';
         bars.innerHTML = '' +
             '<div style="flex:1;position:relative;height:1.8vh;background:#0000004d;border-radius:0;overflow:hidden"><div class="sb-fill" data-p="health" style="width:100%;height:100%;background:#ed2e2e;transition:width .3s;position:absolute;top:0;left:0"></div><span class="sb-pv" data-p="health" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;font-family:GothamPro;font-weight:700;font-style:italic;color:#fff;font-size:1.3vh;text-shadow:0 0 0.3vh #000">100</span></div>' +
             '<div style="flex:1;position:relative;height:1.8vh;background:#0000004d;border-radius:0;overflow:hidden"><div class="sb-fill" data-p="armour" style="width:0%;height:100%;background:#526ee6;transition:width .3s;position:absolute;top:0;left:0"></div><span class="sb-pv" data-p="armour" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;font-family:GothamPro;font-weight:700;font-style:italic;color:#fff;font-size:1.3vh;text-shadow:0 0 0.3vh #000">0</span></div>' +
@@ -264,28 +264,24 @@ function AddHud() {
     }
 
     function getPlayerId() {
-        // Try mp.players.local.id (RADMIR CRMP)
+        // RADMIR CRMP: info.id (main source from game code)
+        try { if (typeof window.interface === 'function') { var hud = window.interface('Hud'); if (hud && hud.info && hud.info.id !== undefined) return hud.info.id; } } catch(e) {}
+        // Try mp.players.local.id
         try { if (typeof mp !== 'undefined' && mp.players && mp.players.local && mp.players.local.id !== undefined) return mp.players.local.id; } catch(e) {}
         // Try samp.players.local.id
         try { if (typeof samp !== 'undefined' && samp.players && samp.players.local && samp.players.local.id !== undefined) return samp.players.local.id; } catch(e) {}
-        // Try RageMP
-        try { if (typeof RageMP !== 'undefined' && RageMP.players && RageMP.players.local && RageMP.players.local.id !== undefined) return RageMP.players.local.id; } catch(e) {}
-        // Try window.interface('Hud').info.playerId
-        try { if (typeof window.interface === 'function') { var hud = window.interface('Hud'); if (hud && hud.info && hud.info.playerId !== undefined) return hud.info.playerId; } } catch(e) {}
         // Try window.interface('Player').info.id
         try { if (typeof window.interface === 'function') { var p = window.interface('Player'); if (p && p.info && p.info.id !== undefined) return p.info.id; } } catch(e) {}
-        // Try window.interface('Player').info.playerId
-        try { if (typeof window.interface === 'function') { var p2 = window.interface('Player'); if (p2 && p2.info && p2.info.playerId !== undefined) return p2.info.playerId; } } catch(e) {}
         return '-';
     }
 
     function getOnline() {
-        // Try mp.players.length (RADMIR CRMP)
+        // RADMIR CRMP: info.online (main source from game code)
+        try { if (typeof window.interface === 'function') { var hud = window.interface('Hud'); if (hud && hud.info && hud.info.online !== undefined) return hud.info.online; } } catch(e) {}
+        // Try mp.players.length
         try { if (typeof mp !== 'undefined' && mp.players && mp.players.length !== undefined) return mp.players.length; } catch(e) {}
         // Try samp.players.length
         try { if (typeof samp !== 'undefined' && samp.players && samp.players.length !== undefined) return samp.players.length; } catch(e) {}
-        // Try window.interface('Hud').info.online
-        try { if (typeof window.interface === 'function') { var hud = window.interface('Hud'); if (hud && hud.info && hud.info.online !== undefined) return hud.info.online; } } catch(e) {}
         // Try window.interface('Server').info.online
         try { if (typeof window.interface === 'function') { var s = window.interface('Server'); if (s && s.info && s.info.online !== undefined) return s.info.online; } } catch(e) {}
         return '-';
