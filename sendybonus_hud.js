@@ -137,17 +137,35 @@ function AddHud() {
         timePanel.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="#FFD600"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg><span style="font-family:GothamPro;font-weight:500;font-size:14px;color:#FFD600" id="sbTime">--:--:--</span><span style="font-family:GothamPro;font-weight:400;font-size:13px;color:rgba(255,215,0,0.5)" id="sbDate">--.--</span>';
         hud.appendChild(timePanel);
 
-        // ПОДСКАЗКИ (справа от радара)
+        // ПОДСКАЗКИ (СПРАВА ОТ РАДАРА)
         var help = document.createElement('div');
-        help.style.cssText = 'position:absolute;bottom:4vh;left:28vh;display:flex;flex-direction:column;gap:0.3vh;font-family:GothamPro;font-size:1.1vh;color:rgba(255,255,255,0.6);text-shadow:1px 1px 3px #000';
-        help.innerHTML = '<div style="display:flex;align-items:center;gap:0.4vh"><span style="padding:0.15vh 0.3vh;background:rgba(0,0,0,0.4);border-radius:0.3vh">M</span> Меню</div><div style="display:flex;align-items:center;gap:0.4vh"><span style="padding:0.15vh 0.3vh;background:rgba(0,0,0,0.4);border-radius:0.3vh">I</span> Инвентарь</div><div style="display:flex;align-items:center;gap:0.4vh"><span style="padding:0.15vh 0.3vh;background:rgba(0,0,0,0.4);border-radius:0.3vh">X</span> Голос</div><div style="display:flex;align-items:center;gap:0.4vh"><span style="padding:0.15vh 0.3vh;background:rgba(0,0,0,0.4);border-radius:0.3vh">Z</span> Анимации</div><div style="display:flex;align-items:center;gap:0.4vh"><span style="padding:0.15vh 0.3vh;background:rgba(0,0,0,0.4);border-radius:0.3vh">F1</span> Помощь</div>';
+        help.id = 'sbHelpPanel';
+        help.style.cssText = 'position:absolute;bottom:4vh;right:calc(5vh + 22vh + 1.5vh);display:flex;flex-direction:column;align-items:flex-end;gap:0.5vh;font-family:GothamPro;font-size:1.2vh;color:rgba(255,255,255,0.7);text-shadow:0 1px 4px rgba(0,0,0,0.8);background:rgba(0,0,0,0.3);padding:0.8vh 1.2vh;border-radius:0.6vh;border:1px solid rgba(255,215,0,0.1);backdrop-filter:blur(4px);';
+        help.innerHTML = '' +
+            '<div style="display:flex;align-items:center;gap:0.6vh;"><span style="padding:0.2vh 0.6vh;background:rgba(255,215,0,0.15);border-radius:0.3vh;font-weight:700;color:#FFD600;font-size:0.9vh;">M</span> <span style="font-weight:300;">Меню</span></div>' +
+            '<div style="display:flex;align-items:center;gap:0.6vh;"><span style="padding:0.2vh 0.6vh;background:rgba(255,215,0,0.15);border-radius:0.3vh;font-weight:700;color:#FFD600;font-size:0.9vh;">I</span> <span style="font-weight:300;">Инвентарь</span></div>' +
+            '<div style="display:flex;align-items:center;gap:0.6vh;"><span style="padding:0.2vh 0.6vh;background:rgba(255,215,0,0.15);border-radius:0.3vh;font-weight:700;color:#FFD600;font-size:0.9vh;">X</span> <span style="font-weight:300;">Голос</span></div>' +
+            '<div style="display:flex;align-items:center;gap:0.6vh;"><span style="padding:0.2vh 0.6vh;background:rgba(255,215,0,0.15);border-radius:0.3vh;font-weight:700;color:#FFD600;font-size:0.9vh;">Z</span> <span style="font-weight:300;">Анимации</span></div>' +
+            '<div style="display:flex;align-items:center;gap:0.6vh;"><span style="padding:0.2vh 0.6vh;background:rgba(255,215,0,0.15);border-radius:0.3vh;font-weight:700;color:#FFD600;font-size:0.9vh;">F1</span> <span style="font-weight:300;">Помощь</span></div>';
         hud.appendChild(help);
 
-        // ID + ONLINE (под подсказками, справа от радара)
+        // ID + ONLINE (СПРАВА ОТ РАДАРА, ВЫШЕ ПОДСКАЗОК)
         var cards = document.createElement('div');
         cards.id = 'sbCards';
-        cards.style.cssText = 'position:absolute;bottom:2vh;left:28vh;display:flex;flex-direction:column;gap:0.4vh';
-        cards.innerHTML = '<div style="display:flex;align-items:center;gap:0.4vh;padding:0.3vh 0.7vh;background:rgba(0,0,0,0.4);border-radius:0.4vh;font-family:GothamPro;font-size:1.3vh;color:#fff"><span style="color:#FFD600;font-weight:700">ID</span><span style="font-weight:500" id="sbPlayerId">—</span></div><div style="display:flex;align-items:center;gap:0.4vh;padding:0.3vh 0.7vh;background:rgba(0,0,0,0.4);border-radius:0.4vh;font-family:GothamPro;font-size:1.3vh;color:#fff"><svg width="1.2vh" height="1.2vh" viewBox="0 0 24 24" fill="#FFD600"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span id="sbOnlineCount" style="font-weight:500">—</span></div>';
+        cards.style.cssText = 'position:absolute;bottom:14vh;right:calc(5vh + 22vh + 1.5vh);display:flex;flex-direction:column;align-items:flex-end;gap:0.5vh;';
+
+        var idBlock = document.createElement('div');
+        idBlock.id = 'sbIdBlock';
+        idBlock.style.cssText = 'display:flex;align-items:center;gap:0.6vh;padding:0.4vh 0.8vh;background:rgba(0,0,0,0.5);border-radius:0.4vh;font-family:GothamPro;font-size:1.3vh;color:#fff;border:1px solid rgba(255,215,0,0.08);';
+        idBlock.innerHTML = '<span style="color:#FFD600;font-weight:700;">ID</span><span style="font-weight:500;" id="sbPlayerId">—</span>';
+        cards.appendChild(idBlock);
+
+        var onlineBlock = document.createElement('div');
+        onlineBlock.id = 'sbOnlineBlock';
+        onlineBlock.style.cssText = 'display:flex;align-items:center;gap:0.6vh;padding:0.4vh 0.8vh;background:rgba(0,0,0,0.5);border-radius:0.4vh;font-family:GothamPro;font-size:1.3vh;color:#fff;border:1px solid rgba(255,215,0,0.08);';
+        onlineBlock.innerHTML = '<svg width="1.2vh" height="1.2vh" viewBox="0 0 24 24" fill="#FFD600"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span id="sbOnlineCount" style="font-weight:500;">—</span>';
+        cards.appendChild(onlineBlock);
+
         hud.appendChild(cards);
 
         document.body.appendChild(hud);
@@ -199,21 +217,23 @@ function AddHud() {
         }, 1000);
     }
 
-    // Получение ID и онлайн из разных источников
+    // Получение ID и онлайн из разных источников (RADMIR CRMP)
     function getPlayerId() {
-        // RAGE:MP
-        if (typeof mp !== 'undefined' && mp.players && mp.players.local) return mp.players.local.remoteId;
+        // RADMIR CRMP
+        if (typeof mp !== 'undefined' && mp.players && mp.players.local) return mp.players.local.id;
+        if (typeof samp !== 'undefined' && samp.players && samp.players.local) return samp.players.local.id;
         // Через window.interface
         if (typeof window.interface === 'function') {
             try { var hud = window.interface('Hud'); if (hud && hud.info && hud.info.playerId !== undefined) return hud.info.playerId; } catch(e) {}
-            try { var hud2 = window.interface('Player'); if (hud2 && hud2.info && hud2.info.id !== undefined) return hud2.info.id; } catch(e) {}
+            try { var p = window.interface('Player'); if (p && p.info && p.info.id !== undefined) return p.info.id; } catch(e) {}
         }
         return '—';
     }
 
     function getOnline() {
-        // RAGE:MP
+        // RADMIR CRMP
         if (typeof mp !== 'undefined' && mp.players) return mp.players.length;
+        if (typeof samp !== 'undefined' && samp.players) return samp.players.length;
         // Через window.interface
         if (typeof window.interface === 'function') {
             try { var hud = window.interface('Hud'); if (hud && hud.info && hud.info.online !== undefined) return hud.info.online; } catch(e) {}
@@ -286,6 +306,17 @@ function AddHud() {
                 props.forEach(function(p) { if (p in hudInfo && updateFunctions[p]) updateFunctions[p](hudInfo[p]); });
                 if ('server' in window.interface("Hud")) updateFunctions.server(window.interface("Hud").server);
                 if ('bonus' in window.interface("Hud")) updateFunctions.bonus(window.interface("Hud").bonus);
+                // Fallback для SAMP/CRMP - повторная проверка
+                setTimeout(function() {
+                    var idEl = document.getElementById('sbPlayerId');
+                    if (idEl && idEl.textContent === '—') {
+                        var playerId = null;
+                        if (typeof mp !== 'undefined' && mp.players && mp.players.local) playerId = mp.players.local.id;
+                        else if (typeof samp !== 'undefined' && samp.players && samp.players.local) playerId = samp.players.local.id;
+                        if (playerId !== null && playerId !== undefined) updateFunctions.playerId(playerId);
+                    }
+                    updatePlayerInfo();
+                }, 2000);
             }
         }, 100);
     }
