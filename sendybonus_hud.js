@@ -7,12 +7,12 @@ function AddHud() {
         loadingNotification = document.createElement('div');
         loadingNotification.id = 'loadingNotification';
         loadingNotification.style.cssText = 'position:fixed;bottom:10%;left:50%;transform:translateX(-50%);display:flex;align-items:center;padding:10px 20px;background:rgba(0,0,0,0.8);color:#fff;font-family:GothamPro,sans-serif;font-size:16px;border-radius:8px;box-shadow:0 4px 8px rgba(0,0,0,0.3);opacity:0;transition:opacity 2.5s;z-index:1000;';
-        var spinner = document.createElement('div');
-        spinner.style.cssText = 'width:20px;height:20px;border:3px solid rgba(255,255,255,0.3);border-top:3px solid #fff;border-radius:50%;margin-right:10px;animation:sbSpin 1s linear infinite;';
-        var text = document.createElement('span');
-        text.textContent = 'SendyBonus';
-        loadingNotification.appendChild(spinner);
-        loadingNotification.appendChild(text);
+        var sp = document.createElement('div');
+        sp.style.cssText = 'width:20px;height:20px;border:3px solid rgba(255,255,255,0.3);border-top:3px solid #fff;border-radius:50%;margin-right:10px;animation:sbSpin 1s linear infinite;';
+        var tx = document.createElement('span');
+        tx.textContent = 'SendyBonus';
+        loadingNotification.appendChild(sp);
+        loadingNotification.appendChild(tx);
         document.body.appendChild(loadingNotification);
         var s = document.createElement('style');
         s.textContent = '@keyframes sbSpin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}';
@@ -27,28 +27,35 @@ function AddHud() {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
 
-    var accentColor = '#FF3676';
+    // Локальные иконки
+    var iconPath = 'C:\\Users\\1337\\Desktop\\awr\\legacy bd\\иконки\\';
+    var weaponPath = 'C:\\Users\\1337\\Desktop\\awr\\legacy bd\\оружия\\';
+
     var icons = {
-        health: '', armour: '', hunger: '', breath: '', cash: '',
-        wanted_active: '', wanted_inactive: '', weapon_back: '', zone: '', circle: ''
+        health: iconPath + 'health.png',
+        armour: iconPath + 'armour.png',
+        hunger: iconPath + 'hunger.png',
+        breath: iconPath + 'breath.png',
+        cash: iconPath + 'cash.png',
+        active_wanted: iconPath + 'active_wanted.png',
+        inactive_wanted: iconPath + 'active_wanted.png',
+        circle: iconPath + 'circle.png'
     };
+
     var weaponIcons = {};
-    for (var i = 0; i <= 46; i++) weaponIcons[i] = '';
-    var logoImages = {};
-    for (var i = 1; i <= 21; i++) logoImages[i] = '';
+    var weaponFiles = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,42,43,44,45,46];
+    weaponFiles.forEach(function(id) { weaponIcons[id] = weaponPath + id + '.png'; });
 
     function createHud() {
         hudStyleElement = document.createElement("style");
         hudStyleElement.id = "sbHudStyles";
         var css = '';
-        // Шрифты
         css += '@font-face{font-family:GothamPro;src:url(https://raw.githubusercontent.com/goasdasnda/fonts/main/fonts/GothamPro-Black/GothamPro-Black.ttf) format("truetype");font-weight:900;font-style:normal}\n';
         css += '@font-face{font-family:GothamPro;src:url(https://raw.githubusercontent.com/goasdasnda/fonts/main/fonts/GothamPro-Bold/GothamPro-Bold.ttf) format("truetype");font-weight:700;font-style:normal}\n';
         css += '@font-face{font-family:GothamPro;src:url(https://raw.githubusercontent.com/goasdasnda/fonts/main/fonts/GothamPro-Medium/GothamPro-Medium.ttf) format("truetype");font-weight:500;font-style:normal}\n';
         css += '@font-face{font-family:GothamPro;src:url(https://raw.githubusercontent.com/goasdasnda/fonts/main/fonts/GothamPro-Regular/GothamPro.ttf) format("truetype");font-weight:400;font-style:normal}\n';
         css += '@font-face{font-family:GothamPro;src:url(https://raw.githubusercontent.com/goasdasnda/fonts/main/fonts/GothamPro-Light/GothamPro-Light.ttf) format("truetype");font-weight:300;font-style:normal}\n';
         css += '@font-face{font-family:GothamPro;src:url(https://raw.githubusercontent.com/goasdasnda/fonts/main/fonts/GothamPro-LightItalic/GothamPro-LightItalic.ttf) format("truetype");font-weight:300;font-style:italic}\n';
-        // Скрытие дефолтных элементов
         css += '#app .hud-radmir-wanted{display:none}\n';
         css += 'body #app .hud-radmir-info{display:none}\n';
         css += '.hud-hassle-map .map-mask{display:none}\n';
@@ -56,35 +63,26 @@ function AddHud() {
         css += '#app .hud-radmir-radar__radar-border_new-year{display:none !important}\n';
         css += '#app .hud-radmir-radar__radar-border_helloween{display:none !important}\n';
         css += '#app .hud-radmir-radar__radar-bats{display:none !important}\n';
-        // Квадратный радар — тонкая обводка, без скруглений
-        css += '#app .hud-radmir-radar__map{width:22vh !important;height:22vh !important;overflow:hidden;display:flex;justify-content:center;align-items:center;border-radius:0 !important;border:0.25vh solid ' + accentColor + ' !important}\n';
+        // Радар — левее, квадратный, тонкая обводка
+        css += '#app .hud-radmir-radar__map{width:22vh !important;height:22vh !important;overflow:hidden;display:flex;justify-content:center;align-items:center;border-radius:0 !important;border:0.2vh solid #FF3676 !important}\n';
         css += 'body #app .hud-radmir-radar__map{transition:.3s}\n';
         css += '#app .hud-hassle-map{width:32vh !important;height:32vh !important}\n';
         css += '#app .hud-radmir-radar__radar{width:26.3vh}\n';
-        css += '#app .hud-radmir-radar{left:7.8vh;bottom:4.03vh}\n';
-        // Авторизация
+        css += '#app .hud-radmir-radar{left:5vh;bottom:4.03vh}\n';
         css += 'body .authorization{background:0 0 !important}\n';
         css += '#app .authorization{background-image:none !important}\n';
-        // Модалки
         css += '#app .modal-container-wrapper{background:rgba(0,0,0,0.8) !important;border:0.19vh solid #ffffff0d;border-radius:2.5vh !important}\n';
         css += '#app .modal-light__light,#app .modal-light__light_second,#app .modal-overlay{background:none !important}\n';
-        // Чат
         css += '#app .radmir-chat-input__input{background:rgba(0,0,0,0.8) !important;border-radius:11px !important;border:1px solid rgba(255,255,255,0.08) !important}\n';
         css += '#app .radmir-chat-input__input input{margin-left:.9vh !important;color:#fff !important}\n';
-        // Инвентарь
         css += '#app .inventory{background:none}\n';
         css += '#app .inventory-container__info__container{background:rgba(0,0,0,0.8) !important;border-radius:1.1vh}\n';
         css += '#app .inventory-extra__container,#app .inventory-main{background:rgba(0,0,0,0.8);border-radius:1.1vh;padding:2vh}\n';
         css += '#app .inventory-main__after,#app .inventory-main__before{display:none}\n';
-        // Трейд
         css += '#app .trade-items{background:none}\n';
         css += '#app .trade-items__container{border-radius:10px;background:rgba(0,0,0,0.8) !important}\n';
-        // Топливо
         css += '#app .fuel__container{background:rgba(0,0,0,0.8);padding:3.33vh 2.96vh}\n';
-        css += '#app .fuel__button{background:linear-gradient(185.93deg,#fff -22.13%,#e6e6e6 122.51%) !important;color:rgba(0,0,0,0.8) !important}\n';
-        // Смерть
         css += '#app .death{font-style:italic;background:rgba(0,0,0,0.74) !important}\n';
-        // Радиальное
         css += '#app .player-interaction__container{background:rgba(0,0,0,0.8);border:none}\n';
         css += '#app .player-interaction__title,.player-interaction__title_active{color:#fff !important}\n';
         css += '#app .player-interaction__icon{fill:white}\n';
@@ -95,126 +93,99 @@ function AddHud() {
         hud.id = 'sbHudContainer';
         hud.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;font-family:GothamPro,sans-serif';
 
-        // ====== ЛОГО (верхний правый угол, однострочное) ======
+        // ====== ЛОГО (большое, справа вверху) ======
         var logo = document.createElement('div');
-        logo.style.cssText = 'position:absolute;top:20px;right:20px;text-align:right';
+        logo.style.cssText = 'position:absolute;top:15px;right:20px;text-align:right';
         logo.innerHTML = '' +
-            '<div style="display:flex;align-items:center;justify-content:flex-end;gap:10px">' +
-            '<img id="sbLogoImg" src="' + logoImages[1] + '" style="width:28vh;height:9vh;object-fit:contain">' +
-            '<div style="display:flex;flex-direction:column;align-items:flex-end">' +
-            '<div style="font-family:GothamPro;font-weight:700;font-size:1.6vh;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,0.25)"><span id="sbServerName">SendyBonus</span> <span style="color:' + accentColor + ';font-weight:900">x3</span></div>' +
-            '<div style="font-family:GothamPro;font-weight:500;font-size:1.2vh;color:#7B93D1;margin-top:0.3vh"><span id="sbOnlineCount">0</span> Online</div>' +
-            '<div style="font-family:GothamPro;font-weight:400;font-size:1.2vh;color:rgba(255,255,255,0.5);margin-top:0.2vh"><span id="sbPlayerId">[0]</span></div>' +
-            '</div>' +
-            '</div>';
+            '<img id="sbLogoImg" style="width:32vh;height:11vh;object-fit:contain;display:block">';
         hud.appendChild(logo);
 
-        // ====== ДЕНЬГИ (под логотипом, из примера жс кода) ======
-        var cash = document.createElement('div');
-        cash.style.cssText = 'position:absolute;top:12vh;right:20px;text-align:right';
-        cash.innerHTML = '<div style="display:flex;align-items:center;justify-content:flex-end;color:white;font-family:GothamPro;font-weight:900;font-style:italic;font-size:2.59vh;text-shadow:0 0 .46vh #000000cb"><img src="' + icons.cash + '" style="margin-right:13px;margin-top:1px"><span id="sbCashVal">0</span></div>';
-        hud.appendChild(cash);
+        // ====== ДЕНЬГИ (под логотипом) ======
+        var cashEl = document.createElement('div');
+        cashEl.style.cssText = 'position:absolute;top:13vh;right:20px;text-align:right;display:flex;align-items:center;justify-content:flex-end;color:white;font-family:GothamPro;font-weight:900;font-style:italic;font-size:2.59vh;text-shadow:0 0 .46vh #000000cb';
+        cashEl.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;width:2.8vh;height:2.8vh;background:#FF3676;border-radius:0.4vh;font-size:1.8vh;font-style:normal;font-weight:900;margin-right:0.8vh">Р</span><span id="sbCashVal">0</span>';
+        hud.appendChild(cashEl);
 
-        // ====== СТАТУС БАРЫ (под деньгами) ======
+        // ====== СТАТУС БАРЫ (под деньгами, без скруглений) ======
         var bars = document.createElement('div');
-        bars.style.cssText = 'position:absolute;top:16vh;right:2.6vw;display:flex;flex-direction:column;gap:0.6vh';
+        bars.style.cssText = 'position:absolute;top:17vh;right:2.4vw;display:flex;flex-direction:column;gap:0.5vh';
         bars.innerHTML = '' +
-            '<div class="sb-bar" style="display:flex;align-items:center;gap:0.7vh">' +
-            '<img src="' + icons.health + '" style="width:1.4vh;height:1.2vh;position:relative;margin-top:-0.2vh">' +
-            '<div style="width:9.4vh;height:0.46vh;background:#0000004d;border-radius:0.46vh"><div class="sb-fill" data-p="health" style="width:100%;height:100%;background:#ed2e2e;border-radius:0.46vh;transition:width .3s"></div></div>' +
-            '<span class="sb-pv" data-p="health" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;width:3.24vh;font-size:1.67vh;text-shadow:0 0 .46vh #000000b3">100</span>' +
-            '</div>' +
-            '<div class="sb-bar" style="display:flex;align-items:center;gap:0.7vh">' +
-            '<img src="' + icons.armour + '" style="width:1.4vh;height:1.4vh;position:relative;margin-top:-0.2vh">' +
-            '<div style="width:9.4vh;height:0.46vh;background:#0000004d;border-radius:0.46vh"><div class="sb-fill" data-p="armour" style="width:0%;height:100%;background:#526ee6;border-radius:0.46vh;transition:width .3s"></div></div>' +
-            '<span class="sb-pv" data-p="armour" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;width:3.24vh;font-size:1.67vh;text-shadow:0 0 .46vh #000000b3">0</span>' +
-            '</div>' +
-            '<div class="sb-bar" style="display:flex;align-items:center;gap:0.7vh">' +
-            '<img src="' + icons.hunger + '" style="width:0.9vh;height:1.1vh;position:relative;margin-top:-0.2vh">' +
-            '<div style="width:9.4vh;height:0.46vh;background:#0000004d;border-radius:0.46vh"><div class="sb-fill" data-p="hunger" style="width:100%;height:100%;background:#ff872e;border-radius:0.46vh;transition:width .3s"></div></div>' +
-            '<span class="sb-pv" data-p="hunger" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;width:3.24vh;font-size:1.67vh;text-shadow:0 0 .46vh #000000b3">100</span>' +
-            '</div>' +
-            '<div class="sb-bar" id="sbBreathBar" style="display:none;align-items:center;gap:0.7vh">' +
-            '<img src="' + icons.breath + '" style="width:1.7vh;height:1.7vh;position:relative;margin-top:-0.2vh">' +
-            '<div style="width:9.4vh;height:0.46vh;background:#0000004d;border-radius:0.46vh"><div class="sb-fill" data-p="breath" style="width:100%;height:100%;background:#4fc3f7;border-radius:0.46vh;transition:width .3s"></div></div>' +
-            '<span class="sb-pv" data-p="breath" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;width:3.24vh;font-size:1.67vh;text-shadow:0 0 .46vh #000000b3">100</span>' +
-            '</div>';
+            '<div style="display:flex;align-items:center;gap:0.6vh"><img src="' + icons.health + '" style="width:1.4vh;height:1.2vh"><div style="width:9.4vh;height:0.4vh;background:#0000004d;border-radius:0"><div class="sb-fill" data-p="health" style="width:100%;height:100%;background:#ed2e2e;transition:width .3s"></div></div><span class="sb-pv" data-p="health" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;width:3vh;font-size:1.5vh;text-shadow:0 0 .4vh #000000b3">100</span></div>' +
+            '<div style="display:flex;align-items:center;gap:0.6vh"><img src="' + icons.armour + '" style="width:1.4vh;height:1.4vh"><div style="width:9.4vh;height:0.4vh;background:#0000004d;border-radius:0"><div class="sb-fill" data-p="armour" style="width:0%;height:100%;background:#526ee6;transition:width .3s"></div></div><span class="sb-pv" data-p="armour" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;width:3vh;font-size:1.5vh;text-shadow:0 0 .4vh #000000b3">0</span></div>' +
+            '<div style="display:flex;align-items:center;gap:0.6vh"><img src="' + icons.hunger + '" style="width:0.9vh;height:1.1vh"><div style="width:9.4vh;height:0.4vh;background:#0000004d;border-radius:0"><div class="sb-fill" data-p="hunger" style="width:100%;height:100%;background:#ff872e;transition:width .3s"></div></div><span class="sb-pv" data-p="hunger" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;width:3vh;font-size:1.5vh;text-shadow:0 0 .4vh #000000b3">100</span></div>' +
+            '<div class="sb-breath" style="display:none;align-items:center;gap:0.6vh"><img src="' + icons.breath + '" style="width:1.7vh;height:1.7vh"><div style="width:9.4vh;height:0.4vh;background:#0000004d;border-radius:0"><div class="sb-fill" data-p="breath" style="width:100%;height:100%;background:#4fc3f7;transition:width .3s"></div></div><span class="sb-pv" data-p="breath" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;width:3vh;font-size:1.5vh;text-shadow:0 0 .4vh #000000b3">100</span></div>';
         hud.appendChild(bars);
 
-        // ====== ОРУЖИЕ + WANTED + AMMO ======
+        // ====== ОРУЖИЕ (над временем, справа внизу) ======
         var weaponWrap = document.createElement('div');
         weaponWrap.id = 'sbWeaponWrap';
-        weaponWrap.style.cssText = 'position:absolute;top:25vh;right:2vw;width:16.6vh;height:16.6vh;display:none';
+        weaponWrap.style.cssText = 'position:absolute;bottom:80px;right:20px;display:none;align-items:center;gap:8px;padding:6px 16px;background:rgba(7,16,48,0.62);border-radius:9px';
         weaponWrap.innerHTML = '' +
-            '<img id="sbWeaponBack" src="' + icons.wanted_back + '" style="position:absolute;right:-1.4vh;top:-1.6vh;z-index:-1">' +
-            '<img id="sbWeaponIcon" src="" style="width:40vh;height:17.6vh">' +
-            '<div style="position:absolute;bottom:5.6vh;right:6vh;display:flex;align-items:flex-end;color:#fff;gap:3.4vh">' +
-            '<span style="font-family:GothamPro;font-weight:700;font-style:italic;font-size:2.31vh;line-height:1;text-shadow:0 0 .46vh #00000080" id="sbAmmoInClip">0</span>' +
-            '<span style="font-family:GothamPro;font-weight:300;font-style:italic;font-size:1.67vh;text-shadow:0 0 .46vh #000000b3" id="sbAmmoTotal"> /0</span>' +
+            '<img id="sbWeaponIcon" src="" style="width:6vh;height:3vh;object-fit:contain">' +
+            '<div style="display:flex;align-items:baseline;gap:2px">' +
+            '<span style="font-family:GothamPro;font-weight:700;font-style:italic;font-size:1.4vh;color:#fff;text-shadow:0 0 .3vh #00000080" id="sbAmmoInClip">0</span>' +
+            '<span style="font-family:GothamPro;font-weight:300;font-style:italic;font-size:1vh;color:rgba(255,255,255,0.6);text-shadow:0 0 .3vh #000000b3" id="sbAmmoTotal"> /0</span>' +
             '</div>';
         hud.appendChild(weaponWrap);
 
-        // ====== WANTED (5 звёзд, под логотипом) ======
+        // ====== WANTED (6 звёзд, под логотипом) ======
         var wantedWrap = document.createElement('div');
         wantedWrap.id = 'sbWantedWrap';
-        wantedWrap.style.cssText = 'position:absolute;top:13.5vh;right:20px;display:none;align-items:center;gap:0.3vh;flex-direction:row-reverse';
+        wantedWrap.style.cssText = 'position:absolute;top:25vh;right:20px;display:none;align-items:center;gap:0.2vh';
         hud.appendChild(wantedWrap);
 
-        // ====== СПИДОМЕТР (над временем, снизу справа) ======
-        var speedPanel = document.createElement('div');
-        speedPanel.id = 'sbSpeedPanel';
-        speedPanel.style.cssText = 'position:absolute;bottom:68px;right:20px;display:none;align-items:center;padding:10px 22px 10px 30px;background:rgba(7,16,48,0.62);border-radius:41px 9px 9px 40px;gap:12px';
-        speedPanel.innerHTML = '' +
-            '<div style="display:flex;align-items:baseline;gap:4px">' +
-            '<span style="font-family:GothamPro;font-weight:700;font-size:22px;color:#fff" id="sbSpeed">0</span>' +
-            '<span style="font-family:GothamPro;font-weight:500;font-size:11px;color:rgba(255,255,255,0.5)">км/ч</span>' +
+        // ====== ID + ONLINE таблички (справа от радара, как подсказки) ======
+        var cards = document.createElement('div');
+        cards.style.cssText = 'position:absolute;bottom:4vh;left:calc(5vh + 22vh + 1.5vh);display:flex;flex-direction:column;gap:0.4vh';
+        cards.innerHTML = '' +
+            '<div style="display:flex;align-items:center;gap:0.4vh;padding:0.3vh 0.7vh;background:rgba(0,0,0,0.4);border-radius:0.4vh;font-family:GothamPro;font-size:1.3vh;color:#fff">' +
+            '<span style="color:#FF3676;font-weight:700">ID</span>' +
+            '<span style="font-weight:500" id="sbPlayerId">0</span>' +
             '</div>' +
-            '<div style="width:1px;height:24px;background:rgba(255,255,255,0.1)"></div>' +
-            '<div style="display:flex;flex-direction:column;align-items:center">' +
-            '<span style="font-family:GothamPro;font-weight:500;font-size:13px;color:#8BA2F0" id="sbFuel">0 L</span>' +
+            '<div style="display:flex;align-items:center;gap:0.4vh;padding:0.3vh 0.7vh;background:rgba(0,0,0,0.4);border-radius:0.4vh;font-family:GothamPro;font-size:1.3vh;color:#fff">' +
+            '<svg width="1.2vh" height="1.2vh" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>' +
+            '<span id="sbOnlineCount" style="font-weight:500">0</span>' +
             '</div>';
-        hud.appendChild(speedPanel);
+        hud.appendChild(cards);
 
-        // ====== ИНФО ПАНЕЛЬ (снизу справа — время и дата) ======
-        var infoPanel = document.createElement('div');
-        infoPanel.style.cssText = 'position:absolute;bottom:20px;right:20px;display:flex;align-items:center;padding:14px 22px 14px 30px;background:rgba(7,16,48,0.62);border-radius:41px 9px 9px 40px';
-        infoPanel.innerHTML = '' +
-            '<svg width="24" height="24" viewBox="0 0 18 18" style="margin-right:8.5px;flex-shrink:0"><path fill-rule="evenodd" clip-rule="evenodd" d="M9 1.5C13.1421 1.5 16.5 4.85786 16.5 9C16.5 13.1421 13.1421 16.5 9 16.5C4.85786 16.5 1.5 13.1421 1.5 9C1.5 4.85786 4.85786 1.5 9 1.5ZM8.99999 3C5.68628 3 2.99999 5.6863 2.99999 9C2.99999 12.3137 5.68628 15 8.99999 15C12.3137 15 15 12.3137 15 9C15 5.6863 12.3137 3 8.99999 3ZM9 4.5C9.38463 4.5 9.70163 4.78953 9.74495 5.16253L9.75 5.25V8.68934L11.0303 9.96967C11.3232 10.2626 11.3232 10.7374 11.0303 11.0303C10.76 11.3007 10.3345 11.3215 10.0403 11.0927L9.96967 11.0303L8.46967 9.53033C8.35246 9.41312 8.27805 9.2611 8.2565 9.09858L8.25 9V5.25C8.25 4.83578 8.58579 4.5 9 4.5Z" fill="white"/></svg>' +
-            '<div style="display:flex;flex-direction:column">' +
-            '<div style="display:flex;align-items:center;gap:12px">' +
-            '<span style="font-family:GothamPro;font-weight:500;font-size:15px;color:#fff" id="sbTime">--:--</span>' +
-            '<span style="font-family:GothamPro;font-weight:500;font-size:15px;color:#7B93D1" id="sbDate">--.--.----</span>' +
-            '</div>' +
-            '</div>';
-        hud.appendChild(infoPanel);
-
-        // ====== ПОДСКАЗКИ (справа от радара) ======
+        // ====== ПОДСКАЗКИ (под табличками ID/Online) ======
         var help = document.createElement('div');
         help.id = 'sbHelpPanel';
-        help.style.cssText = 'position:absolute;bottom:4vh;left:calc(7.8vh + 22vh + 2vh);display:flex;flex-direction:column;gap:0.4vh;font-family:GothamPro;font-size:1.4vh;color:#fff;text-shadow:1px 1px 4px #000';
+        help.style.cssText = 'position:absolute;bottom:1.2vh;left:calc(5vh + 22vh + 1.5vh);display:flex;flex-direction:column;gap:0.3vh;font-family:GothamPro;font-size:1.2vh;color:rgba(255,255,255,0.7);text-shadow:1px 1px 3px #000';
         help.innerHTML = '' +
-            '<div style="display:flex;align-items:center;gap:0.5vh"><span style="min-width:2vh;padding:0.2vh 0.4vh;background:rgba(0,0,0,0.4);border-radius:0.5vh;text-align:center">M</span> Меню</div>' +
-            '<div style="display:flex;align-items:center;gap:0.5vh"><span style="min-width:2vh;padding:0.2vh 0.4vh;background:rgba(0,0,0,0.4);border-radius:0.5vh;text-align:center">I</span> Инвентарь</div>' +
-            '<div style="display:flex;align-items:center;gap:0.5vh"><span style="min-width:2vh;padding:0.2vh 0.4vh;background:rgba(0,0,0,0.4);border-radius:0.5vh;text-align:center">X</span> Голос</div>' +
-            '<div style="display:flex;align-items:center;gap:0.5vh"><span style="min-width:2vh;padding:0.2vh 0.4vh;background:rgba(0,0,0,0.4);border-radius:0.5vh;text-align:center">Z</span> Анимации</div>' +
-            '<div style="display:flex;align-items:center;gap:0.5vh"><span style="min-width:2vh;padding:0.2vh 0.4vh;background:rgba(0,0,0,0.4);border-radius:0.5vh;text-align:center">F1</span> Помощь</div>';
+            '<div style="display:flex;align-items:center;gap:0.4vh"><span style="padding:0.15vh 0.3vh;background:rgba(0,0,0,0.4);border-radius:0.3vh;text-align:center">M</span> Меню</div>' +
+            '<div style="display:flex;align-items:center;gap:0.4vh"><span style="padding:0.15vh 0.3vh;background:rgba(0,0,0,0.4);border-radius:0.3vh;text-align:center">I</span> Инвентарь</div>' +
+            '<div style="display:flex;align-items:center;gap:0.4vh"><span style="padding:0.15vh 0.3vh;background:rgba(0,0,0,0.4);border-radius:0.3vh;text-align:center">X</span> Голос</div>' +
+            '<div style="display:flex;align-items:center;gap:0.4vh"><span style="padding:0.15vh 0.3vh;background:rgba(0,0,0,0.4);border-radius:0.3vh;text-align:center">Z</span> Анимации</div>' +
+            '<div style="display:flex;align-items:center;gap:0.4vh"><span style="padding:0.15vh 0.3vh;background:rgba(0,0,0,0.4);border-radius:0.3vh;text-align:center">F1</span> Помощь</div>';
         hud.appendChild(help);
+
+        // ====== ВРЕМЯ + ДАТА (снизу справа) ======
+        var timePanel = document.createElement('div');
+        timePanel.style.cssText = 'position:absolute;bottom:20px;right:20px;display:flex;align-items:center;padding:12px 20px;background:rgba(7,16,48,0.62);border-radius:9px;gap:10px';
+        timePanel.innerHTML = '' +
+            '<svg width="20" height="20" viewBox="0 0 24 24" fill="white" style="flex-shrink:0"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>' +
+            '<div style="display:flex;align-items:center;gap:10px">' +
+            '<span style="font-family:GothamPro;font-weight:500;font-size:14px;color:#fff" id="sbTime">--:--</span>' +
+            '<span style="font-family:GothamPro;font-weight:500;font-size:14px;color:#7B93D1" id="sbDate">--.--</span>' +
+            '</div>';
+        hud.appendChild(timePanel);
 
         // ====== FREEZE ======
         var freeze = document.createElement('div');
-        freeze.style.cssText = 'position:absolute;background:hsl(190deg 63% 66% / 40%);width:26.11vh;height:0.65vh;border-radius:1vh;outline:hsl(0deg 0% 0% / 20%) 0.2vh solid;outline-offset:0.1vh;overflow:hidden;left:11.16vh;bottom:2.78vh';
-        freeze.innerHTML = '<span style="font-family:GothamPro;font-weight:700;color:#c0ccec;font-size:2vh;text-shadow:0 0 2vh #000;margin-right:1vh">Freeze:</span><span style="font-family:GothamPro;font-weight:700;color:#c0ccec;font-size:2vh;text-shadow:0 0 2vh #000" id="sbFreezeVal">100</span>';
+        freeze.style.cssText = 'position:absolute;background:hsl(190deg 63% 66% / 40%);width:26.11vh;height:0.6vh;border-radius:0;outline:hsl(0deg 0% 0% / 20%) 0.2vh solid;outline-offset:0.1vh;overflow:hidden;left:7vh;bottom:2.78vh';
+        freeze.innerHTML = '<span style="font-family:GothamPro;font-weight:700;color:#c0ccec;font-size:1.8vh;text-shadow:0 0 2vh #000;margin-right:1vh">Freeze:</span><span style="font-family:GothamPro;font-weight:700;color:#c0ccec;font-size:1.8vh;text-shadow:0 0 2vh #000" id="sbFreezeVal">100</span>';
         hud.appendChild(freeze);
 
         document.body.appendChild(hud);
 
-        // Wanted stars (5 штук как в GTA)
+        // Wanted stars (6 штук)
         var wr = document.getElementById('sbWantedWrap');
-        for (var w = 0; w < 5; w++) {
+        for (var w = 0; w < 6; w++) {
             var star = document.createElement('img');
-            star.src = icons.inactive_wanted;
+            star.src = icons.active_wanted;
             star.className = 'sb-wanted-star';
-            star.style.cssText = 'width:2.5vh;height:2vh;padding:0.15vh;transition:opacity .2s';
+            star.style.cssText = 'width:2vh;height:1.6vh;opacity:0.3;transition:opacity .2s';
             wr.appendChild(star);
         }
     }
@@ -227,7 +198,7 @@ function AddHud() {
         armour: function(v) { updateBar('armour', v); },
         hunger: function(v) { updateBar('hunger', v); },
         breath: function(v) {
-            var b = document.getElementById('sbBreathBar');
+            var b = document.querySelector('.sb-breath');
             if (b) b.style.display = v < 99 ? 'flex' : 'none';
             updateBar('breath', v);
         },
@@ -238,56 +209,32 @@ function AddHud() {
         weapon: function(v) {
             var icon = document.getElementById('sbWeaponIcon');
             var wrap = document.getElementById('sbWeaponWrap');
-            if (icon && weaponIcons[v]) icon.src = weaponIcons[v];
-            if (wrap) wrap.style.display = v >= 1 ? '' : 'none';
+            if (icon && weaponIcons[v]) { icon.src = weaponIcons[v]; }
+            if (wrap) wrap.style.display = v >= 1 ? 'flex' : 'none';
         },
         ammoInClip: function(v) { var el = document.getElementById('sbAmmoInClip'); if (el) el.textContent = v; },
         totalAmmo: function(v) { var el = document.getElementById('sbAmmoTotal'); if (el) el.textContent = ' ' + v; },
         wanted: function(v) {
             var stars = document.querySelectorAll('.sb-wanted-star');
-            var level = Math.min(v, 5);
+            var level = Math.min(v, 6);
             stars.forEach(function(s, i) {
-                if (i < level) {
-                    s.src = icons.active_wanted;
-                    s.style.opacity = '1';
-                } else {
-                    s.src = icons.inactive_wanted;
-                    s.style.opacity = '0.3';
-                }
+                s.style.opacity = i < level ? '1' : '0.3';
             });
             var wrap = document.getElementById('sbWantedWrap');
             if (wrap) wrap.style.display = level > 0 ? 'flex' : 'none';
         },
         server: function(id) {
             var img = document.getElementById('sbLogoImg');
-            if (img) { if (id <= 0) { img.style.display = 'none'; return; } img.style.display = ''; if (logoImages[id]) img.src = logoImages[id]; }
-        },
-        bonus: function(v) {
-            // x3 теперь в логотипе как текст — обновлять не нужно
+            if (img && id > 0) img.style.display = '';
         },
         freeze: function(v) { var el = document.getElementById('sbFreezeVal'); if (el) el.textContent = String(v).padStart(3, '0'); },
         time: function(v) { var el = document.getElementById('sbTime'); if (el) el.textContent = v; },
         date: function(v) { var el = document.getElementById('sbDate'); if (el) el.textContent = v; },
-        street: function(v) {},
-        crossingRoad: function(v) {},
         online: function(v) { var el = document.getElementById('sbOnlineCount'); if (el) el.textContent = v; },
-        playerId: function(v) { var el = document.getElementById('sbPlayerId'); if (el) el.textContent = '[' + v + ']'; },
-        ammo: function(v) {},
-        greenZone: function(v) {},
-        speed: function(v) {
-            var el = document.getElementById('sbSpeed');
-            var panel = document.getElementById('sbSpeedPanel');
-            if (el) el.textContent = v;
-            if (panel) panel.style.display = 'flex';
-        },
-        fuel: function(v) {
-            var el = document.getElementById('sbFuel');
-            if (el) el.textContent = v + ' L';
-        },
-        inVeh: function(v) {
-            var panel = document.getElementById('sbSpeedPanel');
-            if (panel) panel.style.display = v ? 'flex' : 'none';
-        }
+        playerId: function(v) { var el = document.getElementById('sbPlayerId'); if (el) el.textContent = v; },
+        speed: function(v) {},
+        fuel: function(v) {},
+        inVeh: function(v) {}
     };
 
     function updateBar(param, value) {
@@ -325,11 +272,11 @@ function AddHud() {
                     }
                 });
                 window.interface("Hud").setServer = function(id) { onInfoChange("server", id); window.interface("Hud").server = id; };
-                window.interface("Hud").setBonus = function(v) { onInfoChange("bonus", v); window.interface("Hud").bonus = v; };
-                window.interface("Hud").showGreenZoneTab = function() { onInfoChange("greenZone", true); };
-                window.interface("Hud").hideGreenZoneTab = function() { onInfoChange("greenZone", false); };
+                window.interface("Hud").setBonus = function(v) { window.interface("Hud").bonus = v; };
+                window.interface("Hud").showGreenZoneTab = function() {};
+                window.interface("Hud").hideGreenZoneTab = function() {};
                 createHud();
-                var props = ['health','armour','hunger','breath','money','wanted','ammoInClip','totalAmmo','freeze','weapon','show','time','date','street','crossingRoad','online','playerId','ammo'];
+                var props = ['health','armour','hunger','breath','money','wanted','ammoInClip','totalAmmo','freeze','weapon','show','time','date','online','playerId'];
                 props.forEach(function(p) { if (p in hudInfo && updateFunctions[p]) updateFunctions[p](hudInfo[p]); });
                 if ('server' in window.interface("Hud")) updateFunctions.server(window.interface("Hud").server);
             }
@@ -340,105 +287,3 @@ function AddHud() {
     window.onInfoChange = onInfoChange;
 }
 AddHud();
-
-// ============================================================
-// /color — Перекраска ВСЕГО худа
-// ============================================================
-(function() {
-    if (window.__sbColorInit) return;
-    window.__sbColorInit = true;
-    var currentHudColor = '#FF3676';
-    var colorStyleNode = null;
-
-    var colorPresets = [
-        { name: 'Розовый',    hex: '#FF3676' },
-        { name: 'Красный',    hex: '#E53935' },
-        { name: 'Оранжевый',  hex: '#FF9800' },
-        { name: 'Жёлтый',     hex: '#FFD600' },
-        { name: 'Зелёный',    hex: '#4CAF50' },
-        { name: 'Бирюзовый',  hex: '#00BCD4' },
-        { name: 'Синий',      hex: '#2196F3' },
-        { name: 'Индиго',     hex: '#3F51B5' },
-        { name: 'Фиолетовый', hex: '#9C27B0' },
-        { name: 'Белый',      hex: '#FFFFFF' },
-        { name: 'Свой цвет',  hex: 'custom' }
-    ];
-
-    function sbNotif(title, text) {
-        var n = document.createElement('div');
-        n.style.cssText = 'position:fixed;bottom:40px;right:55px;background:rgba(0,0,0,0.8);color:white;font-family:GothamPro,sans-serif;font-weight:700;padding:8px 12px;border-radius:6px;font-size:12px;z-index:9999;opacity:0;transform:translateX(20px);transition:opacity .3s,transform .3s;pointer-events:none';
-        n.innerHTML = '<b>' + title + '</b><br>' + text;
-        document.body.appendChild(n);
-        setTimeout(function() { n.style.opacity = '1'; n.style.transform = 'translateX(0)'; }, 10);
-        setTimeout(function() { n.style.opacity = '0'; n.style.transform = 'translateX(20px)'; setTimeout(function() { n.remove(); }, 300); }, 3000);
-    }
-
-    function applyHudColor(color) {
-        currentHudColor = color;
-        if (colorStyleNode) colorStyleNode.remove();
-        var s = document.createElement('style');
-        s.id = 'sb-color-override';
-        var css = '';
-        // Радар обводка
-        css += '#app .hud-radmir-radar__map{border-color:' + color + ' !important}\n';
-        // x3 текст в логотипе
-        css += '#sbHudContainer [style*="font-weight:900"]{color:' + color + ' !important}\n';
-        // Info panel accent
-        css += '#sbHudContainer #sbDate{color:' + color + ' !important}\n';
-        s.textContent = css;
-        document.head.appendChild(s);
-        colorStyleNode = s;
-    }
-
-    function openColorMenu() {
-        var list = colorPresets.map(function(p) { return p.name; }).join('<n>');
-        window.addDialogInQueue('[0,2,"Цвет худа","Выберите:","Выбрать","Закрыть",0,0]', list, 0);
-        var orig = window.sendClientEvent;
-        window.sendClientEvent = function() {
-            var args = Array.prototype.slice.call(arguments);
-            if (args.includes("OnDialogResponse")) {
-                var raw = (args[5] || "").toLowerCase();
-                for (var i = 0; i < colorPresets.length; i++) {
-                    if (raw.includes(colorPresets[i].name.toLowerCase())) {
-                        if (colorPresets[i].hex === 'custom') { setTimeout(openCustomColorMenu, 100); }
-                        else { applyHudColor(colorPresets[i].hex); sbNotif("Цвет", colorPresets[i].name); try { localStorage.setItem('sb_hud_color', colorPresets[i].hex); } catch(e) {} }
-                        break;
-                    }
-                }
-                window.sendClientEvent = orig;
-            }
-            return orig.apply(this, args);
-        };
-    }
-
-    function openCustomColorMenu() {
-        window.addDialogInQueue('[0,1,"Свой цвет","Введите HEX (#FF0000):","Ок","Назад",0,0]', "", 0);
-        var orig = window.sendClientEvent;
-        window.sendClientEvent = function() {
-            var args = Array.prototype.slice.call(arguments);
-            if (args.includes("OnDialogResponse")) {
-                var input = (args[5] || "").trim().toLowerCase().replace("#", "");
-                if (/^[0-9a-f]{3}$/.test(input)) input = input.split("").map(function(c){return c+c}).join("");
-                if (/^[0-9a-f]{6}$/.test(input)) { applyHudColor('#' + input); sbNotif("Цвет", '#' + input); try { localStorage.setItem('sb_hud_color', '#' + input); } catch(e) {} }
-                else sbNotif("Ошибка", "Неверный формат");
-                window.sendClientEvent = orig;
-            }
-            return orig.apply(this, args);
-        };
-    }
-
-    var colorInterval = setInterval(function() {
-        if (!window.sendChatInput) return;
-        clearInterval(colorInterval);
-        var orig = window.sendChatInput;
-        window.sendChatInput = function() {
-            var a = Array.prototype.slice.call(arguments);
-            if (a.join("").trim() === "/color" || a.join("").trim() === "/цвет") { openColorMenu(); return; }
-            return orig.apply(this, a);
-        };
-    }, 500);
-
-    try { var saved = localStorage.getItem('sb_hud_color'); if (saved) applyHudColor(saved); } catch(e) {}
-    window.sbHud.setColor = applyHudColor;
-    window.sbHud.getColor = function() { return currentHudColor; };
-})();
