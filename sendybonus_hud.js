@@ -55,9 +55,10 @@ function AddHud() {
         // РАДАР — только рамка и форма
         css += '#app .hud-radmir-radar__map{border-radius:0 !important;border:0.2vh solid #FFD600 !important}\n';
         css += '#app .hud-radmir-radar{left:5vh !important;bottom:4vh !important}\n';
-        // АВТОРИЗАЦИЯ
-        css += '#app .authorization{background:0 0;display:flex;justify-content:center;align-items:center;height:100vh;margin-top:-8vh;animation:sbSD .5s ease-out forwards}@keyframes sbSD{0%{opacity:0;transform:translateY(-4vh)}100%{opacity:1;transform:translateY(0)}}\n';
-        css += '#app .login-auth:before,#app .login-code:before,#app .registration:before{content:"";background-image:url(hud/авторизация.png);background-size:cover;width:100vw;height:100vh;position:absolute;top:0;left:0;z-index:0;opacity:0.999}\n';
+        // АВТОРИЗАЦИЯ (без затемнения на весь экран)
+        css += '#app .authorization{background:transparent !important;display:flex;justify-content:center;align-items:center;height:100vh;margin-top:-8vh;animation:sbSD .5s ease-out forwards}@keyframes sbSD{0%{opacity:0;transform:translateY(-4vh)}100%{opacity:1;transform:translateY(0)}}\n';
+        css += '#app .authorization__bg{opacity:0 !important}\n';
+        css += '#app .login-auth:before,#app .login-code:before,#app .registration:before{content:"";background-image:url(hud/авторизация.png);background-size:cover;width:100vw;height:100vh;position:absolute;top:0;left:0;z-index:-1;opacity:0.999}\n';
         css += '#app .authorization-field{height:4.63vh;box-sizing:border-box;border:.19vh solid #ffffff91;border-radius:.74vh;color:#ffffffd6;font-size:1.3vh;width:46.48vh;position:relative;font-weight:400;background:#00000054;font-family:GothamPro,sans-serif}#app .authorization-field__input{color:#ffffffd6 !important;font-size:1.3vh;border:none !important;font-family:GothamPro,sans-serif}\n';
         css += '#app .login-form__button,#app .registration-form__button{padding:0 4.63vh;height:6.11vh;border-radius:.74vh;line-height:6.11vh;font-size:2.04vh;font-weight:500;width:17vh;margin-left:50%;left:50%;transform:translateX(-50%)}\n';
         // СПИДОМЕТР
@@ -106,14 +107,14 @@ function AddHud() {
         cashEl.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;width:2.8vh;height:2.8vh;background:#FFD600;border-radius:0.4vh;font-size:1.8vh;font-style:normal;font-weight:900;color:#000;margin-right:0.8vh">Р</span><span id="sbCashVal">0</span>';
         hud.appendChild(cashEl);
 
-        // БАРЫ (числа СЛЕВА от бара, иконки справа)
+        // БАРЫ (нижняя рамка радара, hp/броня/голод одинаковые)
         var bars = document.createElement('div');
-        bars.style.cssText = 'position:absolute;top:12.5vh;right:20px;display:flex;flex-direction:column;gap:0.5vh;align-items:flex-end';
+        bars.style.cssText = 'position:absolute;bottom:3.6vh;left:5vh;display:flex;gap:0.3vh;align-items:center;width:22vh';
         bars.innerHTML = '' +
-            '<div style="display:flex;align-items:center;gap:0.5vh"><span class="sb-pv" data-p="health" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;width:3vh;font-size:1.5vh">100</span><div style="width:9.4vh;height:0.4vh;background:#0000004d;border-radius:0"><div class="sb-fill" data-p="health" style="width:100%;height:100%;background:#ed2e2e;transition:width .3s"></div></div><img src="' + icons.health + '" style="width:1.4vh;height:1.2vh"></div>' +
-            '<div style="display:flex;align-items:center;gap:0.5vh"><span class="sb-pv" data-p="armour" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;width:3vh;font-size:1.5vh">0</span><div style="width:9.4vh;height:0.4vh;background:#0000004d;border-radius:0"><div class="sb-fill" data-p="armour" style="width:0%;height:100%;background:#526ee6;transition:width .3s"></div></div><img src="' + icons.armour + '" style="width:1.4vh;height:1.4vh"></div>' +
-            '<div style="display:flex;align-items:center;gap:0.5vh"><span class="sb-pv" data-p="hunger" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;width:3vh;font-size:1.5vh">100</span><div style="width:9.4vh;height:0.4vh;background:#0000004d;border-radius:0"><div class="sb-fill" data-p="hunger" style="width:100%;height:100%;background:#ff872e;transition:width .3s"></div></div><img src="' + icons.hunger + '" style="width:0.9vh;height:1.1vh"></div>' +
-            '<div class="sb-breath" style="display:none;align-items:center;gap:0.5vh"><span class="sb-pv" data-p="breath" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;width:3vh;font-size:1.5vh">100</span><div style="width:9.4vh;height:0.4vh;background:#0000004d;border-radius:0"><div class="sb-fill" data-p="breath" style="width:100%;height:100%;background:#4fc3f7;transition:width .3s"></div></div><img src="' + icons.breath + '" style="width:1.7vh;height:1.7vh"></div>';
+            '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.2vh"><div style="width:100%;height:0.35vh;background:#0000004d;border-radius:0"><div class="sb-fill" data-p="health" style="width:100%;height:100%;background:#ed2e2e;transition:width .3s"></div></div><div style="display:flex;align-items:center;gap:0.3vh"><img src="' + icons.health + '" style="width:1.2vh;height:1vh"><span class="sb-pv" data-p="health" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;font-size:1.2vh">100</span></div></div>' +
+            '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.2vh"><div style="width:100%;height:0.35vh;background:#0000004d;border-radius:0"><div class="sb-fill" data-p="armour" style="width:0%;height:100%;background:#526ee6;transition:width .3s"></div></div><div style="display:flex;align-items:center;gap:0.3vh"><img src="' + icons.armour + '" style="width:1.2vh;height:1.2vh"><span class="sb-pv" data-p="armour" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;font-size:1.2vh">0</span></div></div>' +
+            '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.2vh"><div style="width:100%;height:0.35vh;background:#0000004d;border-radius:0"><div class="sb-fill" data-p="hunger" style="width:100%;height:100%;background:#ff872e;transition:width .3s"></div></div><div style="display:flex;align-items:center;gap:0.3vh"><img src="' + icons.hunger + '" style="width:0.8vh;height:1vh"><span class="sb-pv" data-p="hunger" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;font-size:1.2vh">100</span></div></div>' +
+            '<div class="sb-breath" style="display:none;flex:1;flex-direction:column;align-items:center;gap:0.2vh"><div style="width:100%;height:0.35vh;background:#0000004d;border-radius:0"><div class="sb-fill" data-p="breath" style="width:100%;height:100%;background:#4fc3f7;transition:width .3s"></div></div><div style="display:flex;align-items:center;gap:0.3vh"><img src="' + icons.breath + '" style="width:1.4vh;height:1.4vh"><span class="sb-pv" data-p="breath" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;font-size:1.2vh">100</span></div></div>';
         hud.appendChild(bars);
 
         // WANTED
@@ -122,18 +123,18 @@ function AddHud() {
         wantedWrap.style.cssText = 'position:absolute;top:14.5vh;right:20px;display:none;align-items:center;gap:0.2vh';
         hud.appendChild(wantedWrap);
 
-        // ОРУЖИЕ
+        // ОРУЖИЕ (жёлтая табличка)
         var weaponWrap = document.createElement('div');
         weaponWrap.id = 'sbWeaponWrap';
-        weaponWrap.style.cssText = 'position:absolute;bottom:65px;right:20px;display:none;align-items:center;gap:8px;padding:6px 14px;background:rgba(7,16,48,0.62);border-radius:9px';
-        weaponWrap.innerHTML = '<img id="sbWeaponIcon" src="" style="width:5vh;height:2.5vh;object-fit:contain"><div style="display:flex;align-items:baseline;gap:2px"><span style="font-family:GothamPro;font-weight:700;font-style:italic;font-size:1.3vh;color:#fff" id="sbAmmoInClip">0</span><span style="font-family:GothamPro;font-weight:300;font-style:italic;font-size:0.9vh;color:rgba(255,255,255,0.5)" id="sbAmmoTotal">/0</span></div>';
+        weaponWrap.style.cssText = 'position:absolute;bottom:65px;right:20px;display:none;align-items:center;gap:8px;padding:6px 14px;background:rgba(255,215,0,0.12);border:1px solid rgba(255,215,0,0.3);border-radius:9px';
+        weaponWrap.innerHTML = '<img id="sbWeaponIcon" src="" style="width:5vh;height:2.5vh;object-fit:contain"><div style="display:flex;align-items:baseline;gap:2px"><span style="font-family:GothamPro;font-weight:700;font-style:italic;font-size:1.3vh;color:#FFD600" id="sbAmmoInClip">0</span><span style="font-family:GothamPro;font-weight:300;font-style:italic;font-size:0.9vh;color:rgba(255,215,0,0.5)" id="sbAmmoTotal">/0</span></div>';
         hud.appendChild(weaponWrap);
 
-        // ВРЕМЯ (без жёлтого)
+        // ВРЕМЯ (жёлтый, с секундами, норм отступы)
         var timePanel = document.createElement('div');
         timePanel.id = 'sbTimeWrap';
-        timePanel.style.cssText = 'position:absolute;bottom:20px;right:20px;display:flex;align-items:center;padding:12px 20px;background:rgba(7,16,48,0.62);border-radius:9px;gap:10px;transition:right .3s';
-        timePanel.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg><span style="font-family:GothamPro;font-weight:500;font-size:14px;color:#fff" id="sbTime">--:--</span><span style="font-family:GothamPro;font-weight:500;font-size:14px;color:#7B93D1" id="sbDate">--.--</span>';
+        timePanel.style.cssText = 'position:absolute;bottom:20px;right:20px;display:flex;align-items:center;padding:14px 24px;background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.2);border-radius:9px;gap:16px;transition:right .3s';
+        timePanel.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="#FFD600"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg><span style="font-family:GothamPro;font-weight:500;font-size:14px;color:#FFD600" id="sbTime">--:--:--</span><span style="font-family:GothamPro;font-weight:400;font-size:13px;color:rgba(255,215,0,0.5)" id="sbDate">--.--</span>';
         hud.appendChild(timePanel);
 
         // ID + ONLINE (правее радара: 5vh + 22vh + 2vh = 29vh)
@@ -193,7 +194,7 @@ function AddHud() {
             var now = new Date();
             var timeEl = document.getElementById('sbTime');
             var dateEl = document.getElementById('sbDate');
-            if (timeEl) timeEl.textContent = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+            if (timeEl) timeEl.textContent = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0') + ':' + String(now.getSeconds()).padStart(2, '0');
             if (dateEl) dateEl.textContent = String(now.getDate()).padStart(2, '0') + '.' + String(now.getMonth() + 1).padStart(2, '0');
         }, 1000);
     }
