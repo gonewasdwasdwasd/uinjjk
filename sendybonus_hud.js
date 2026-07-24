@@ -55,10 +55,10 @@ function AddHud() {
         // РАДАР — только рамка и форма
         css += '#app .hud-radmir-radar__map{border-radius:0 !important;border:0.2vh solid #FFD600 !important}\n';
         css += '#app .hud-radmir-radar{left:5vh !important;bottom:4vh !important}\n';
-        // АВТОРИЗАЦИЯ (без затемнения на весь экран)
-        css += '#app .authorization{background:transparent !important;display:flex;justify-content:center;align-items:center;height:100vh;margin-top:-8vh;animation:sbSD .5s ease-out forwards}@keyframes sbSD{0%{opacity:0;transform:translateY(-4vh)}100%{opacity:1;transform:translateY(0)}}\n';
-        css += '#app .authorization__bg{opacity:0 !important}\n';
-        css += '#app .login-auth:before,#app .login-code:before,#app .registration:before{content:"";background-image:url(hud/авторизация.png);background-size:cover;width:100vw;height:100vh;position:absolute;top:0;left:0;z-index:-1;opacity:0.999}\n';
+        // АВТОРИЗАЦИЯ
+        css += '#app .authorization{background:0 0 !important;display:flex;justify-content:center;align-items:center;height:100vh;margin-top:0 !important}\n';
+        css += '#app .authorization__bg{display:none !important}\n';
+        css += '#app .login-auth:before,#app .login-code:before,#app .registration:before{content:"";background-image:url(hud/авторизация.png);background-size:cover;width:100vw;height:100vh;position:fixed;top:0;left:0;z-index:-1}\n';
         css += '#app .authorization-field{height:4.63vh;box-sizing:border-box;border:.19vh solid #ffffff91;border-radius:.74vh;color:#ffffffd6;font-size:1.3vh;width:46.48vh;position:relative;font-weight:400;background:#00000054;font-family:GothamPro,sans-serif}#app .authorization-field__input{color:#ffffffd6 !important;font-size:1.3vh;border:none !important;font-family:GothamPro,sans-serif}\n';
         css += '#app .login-form__button,#app .registration-form__button{padding:0 4.63vh;height:6.11vh;border-radius:.74vh;line-height:6.11vh;font-size:2.04vh;font-weight:500;width:17vh;margin-left:50%;left:50%;transform:translateX(-50%)}\n';
         // СПИДОМЕТР
@@ -107,14 +107,14 @@ function AddHud() {
         cashEl.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;width:2.8vh;height:2.8vh;background:#FFD600;border-radius:0.4vh;font-size:1.8vh;font-style:normal;font-weight:900;color:#000;margin-right:0.8vh">Р</span><span id="sbCashVal">0</span>';
         hud.appendChild(cashEl);
 
-        // БАРЫ (нижняя рамка радара, hp/броня/голод одинаковые)
+        // БАРЫ (нижняя рамка радара, толстые)
         var bars = document.createElement('div');
-        bars.style.cssText = 'position:absolute;bottom:3.6vh;left:5vh;display:flex;gap:0.3vh;align-items:center;width:22vh';
+        bars.style.cssText = 'position:absolute;bottom:3.4vh;left:5vh;display:flex;gap:0.4vh;align-items:flex-start;width:22vh';
         bars.innerHTML = '' +
-            '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.2vh"><div style="width:100%;height:0.35vh;background:#0000004d;border-radius:0"><div class="sb-fill" data-p="health" style="width:100%;height:100%;background:#ed2e2e;transition:width .3s"></div></div><div style="display:flex;align-items:center;gap:0.3vh"><img src="' + icons.health + '" style="width:1.2vh;height:1vh"><span class="sb-pv" data-p="health" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;font-size:1.2vh">100</span></div></div>' +
-            '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.2vh"><div style="width:100%;height:0.35vh;background:#0000004d;border-radius:0"><div class="sb-fill" data-p="armour" style="width:0%;height:100%;background:#526ee6;transition:width .3s"></div></div><div style="display:flex;align-items:center;gap:0.3vh"><img src="' + icons.armour + '" style="width:1.2vh;height:1.2vh"><span class="sb-pv" data-p="armour" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;font-size:1.2vh">0</span></div></div>' +
-            '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.2vh"><div style="width:100%;height:0.35vh;background:#0000004d;border-radius:0"><div class="sb-fill" data-p="hunger" style="width:100%;height:100%;background:#ff872e;transition:width .3s"></div></div><div style="display:flex;align-items:center;gap:0.3vh"><img src="' + icons.hunger + '" style="width:0.8vh;height:1vh"><span class="sb-pv" data-p="hunger" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;font-size:1.2vh">100</span></div></div>' +
-            '<div class="sb-breath" style="display:none;flex:1;flex-direction:column;align-items:center;gap:0.2vh"><div style="width:100%;height:0.35vh;background:#0000004d;border-radius:0"><div class="sb-fill" data-p="breath" style="width:100%;height:100%;background:#4fc3f7;transition:width .3s"></div></div><div style="display:flex;align-items:center;gap:0.3vh"><img src="' + icons.breath + '" style="width:1.4vh;height:1.4vh"><span class="sb-pv" data-p="breath" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;font-size:1.2vh">100</span></div></div>';
+            '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.3vh"><div style="width:100%;height:0.6vh;background:#0000004d;border-radius:0"><div class="sb-fill" data-p="health" style="width:100%;height:100%;background:#ed2e2e;transition:width .3s"></div></div><div style="display:flex;align-items:center;gap:0.4vh"><img src="' + icons.health + '" style="width:1.4vh;height:1.2vh"><span class="sb-pv" data-p="health" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;font-size:1.3vh">100</span></div></div>' +
+            '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.3vh"><div style="width:100%;height:0.6vh;background:#0000004d;border-radius:0"><div class="sb-fill" data-p="armour" style="width:0%;height:100%;background:#526ee6;transition:width .3s"></div></div><div style="display:flex;align-items:center;gap:0.4vh"><img src="' + icons.armour + '" style="width:1.4vh;height:1.4vh"><span class="sb-pv" data-p="armour" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;font-size:1.3vh">0</span></div></div>' +
+            '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.3vh"><div style="width:100%;height:0.6vh;background:#0000004d;border-radius:0"><div class="sb-fill" data-p="hunger" style="width:100%;height:100%;background:#ff872e;transition:width .3s"></div></div><div style="display:flex;align-items:center;gap:0.4vh"><img src="' + icons.hunger + '" style="width:1vh;height:1.2vh"><span class="sb-pv" data-p="hunger" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;font-size:1.3vh">100</span></div></div>' +
+            '<div class="sb-breath" style="display:none;flex:1;flex-direction:column;align-items:center;gap:0.3vh"><div style="width:100%;height:0.6vh;background:#0000004d;border-radius:0"><div class="sb-fill" data-p="breath" style="width:100%;height:100%;background:#4fc3f7;transition:width .3s"></div></div><div style="display:flex;align-items:center;gap:0.4vh"><img src="' + icons.breath + '" style="width:1.6vh;height:1.6vh"><span class="sb-pv" data-p="breath" style="font-family:GothamPro;font-weight:300;font-style:italic;color:#fff;font-size:1.3vh">100</span></div></div>';
         hud.appendChild(bars);
 
         // WANTED
@@ -137,18 +137,18 @@ function AddHud() {
         timePanel.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="#FFD600"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg><span style="font-family:GothamPro;font-weight:500;font-size:14px;color:#FFD600" id="sbTime">--:--:--</span><span style="font-family:GothamPro;font-weight:400;font-size:13px;color:rgba(255,215,0,0.5)" id="sbDate">--.--</span>';
         hud.appendChild(timePanel);
 
-        // ID + ONLINE (правее радара: 5vh + 22vh + 2vh = 29vh)
-        var cards = document.createElement('div');
-        cards.id = 'sbCards';
-        cards.style.cssText = 'position:absolute;bottom:4vh;left:29vh;display:flex;flex-direction:column;gap:0.4vh';
-        cards.innerHTML = '<div style="display:flex;align-items:center;gap:0.4vh;padding:0.3vh 0.7vh;background:rgba(0,0,0,0.4);border-radius:0.4vh;font-family:GothamPro;font-size:1.3vh;color:#fff"><span style="color:#FFD600;font-weight:700">ID</span><span style="font-weight:500" id="sbPlayerId">—</span></div><div style="display:flex;align-items:center;gap:0.4vh;padding:0.3vh 0.7vh;background:rgba(0,0,0,0.4);border-radius:0.4vh;font-family:GothamPro;font-size:1.3vh;color:#fff"><svg width="1.2vh" height="1.2vh" viewBox="0 0 24 24" fill="#FFD600"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span id="sbOnlineCount" style="font-weight:500">—</span></div>';
-        hud.appendChild(cards);
-
-        // ПОДСКАЗКИ (справа от карточек ID/Online)
+        // ПОДСКАЗКИ (справа сверху от радара, снаружи)
         var help = document.createElement('div');
-        help.style.cssText = 'position:absolute;bottom:4vh;left:29vh;margin-top:4.5vh;display:flex;flex-direction:column;gap:0.3vh;font-family:GothamPro;font-size:1.1vh;color:rgba(255,255,255,0.6);text-shadow:1px 1px 3px #000';
+        help.style.cssText = 'position:absolute;bottom:24vh;left:calc(5vh + 22vh + 1.5vh);display:flex;flex-direction:column;gap:0.3vh;font-family:GothamPro;font-size:1.1vh;color:rgba(255,255,255,0.6);text-shadow:1px 1px 3px #000';
         help.innerHTML = '<div style="display:flex;align-items:center;gap:0.4vh"><span style="padding:0.15vh 0.3vh;background:rgba(0,0,0,0.4);border-radius:0.3vh">M</span> Меню</div><div style="display:flex;align-items:center;gap:0.4vh"><span style="padding:0.15vh 0.3vh;background:rgba(0,0,0,0.4);border-radius:0.3vh">I</span> Инвентарь</div><div style="display:flex;align-items:center;gap:0.4vh"><span style="padding:0.15vh 0.3vh;background:rgba(0,0,0,0.4);border-radius:0.3vh">X</span> Голос</div><div style="display:flex;align-items:center;gap:0.4vh"><span style="padding:0.15vh 0.3vh;background:rgba(0,0,0,0.4);border-radius:0.3vh">Z</span> Анимации</div><div style="display:flex;align-items:center;gap:0.4vh"><span style="padding:0.15vh 0.3vh;background:rgba(0,0,0,0.4);border-radius:0.3vh">F1</span> Помощь</div>';
         hud.appendChild(help);
+
+        // ID + ONLINE (под подсказками)
+        var cards = document.createElement('div');
+        cards.id = 'sbCards';
+        cards.style.cssText = 'position:absolute;bottom:4vh;left:calc(5vh + 22vh + 1.5vh);display:flex;flex-direction:column;gap:0.4vh';
+        cards.innerHTML = '<div style="display:flex;align-items:center;gap:0.4vh;padding:0.3vh 0.7vh;background:rgba(0,0,0,0.4);border-radius:0.4vh;font-family:GothamPro;font-size:1.3vh;color:#fff"><span style="color:#FFD600;font-weight:700">ID</span><span style="font-weight:500" id="sbPlayerId">—</span></div><div style="display:flex;align-items:center;gap:0.4vh;padding:0.3vh 0.7vh;background:rgba(0,0,0,0.4);border-radius:0.4vh;font-family:GothamPro;font-size:1.3vh;color:#fff"><svg width="1.2vh" height="1.2vh" viewBox="0 0 24 24" fill="#FFD600"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span id="sbOnlineCount" style="font-weight:500">—</span></div>';
+        hud.appendChild(cards);
 
         document.body.appendChild(hud);
 
