@@ -179,7 +179,7 @@ function AddHud() {
         // БАРЫ (справа от радара, у правого верхнего угла)
         var bars = document.createElement('div');
         bars.id = 'sbBars';
-        bars.style.cssText = 'position:absolute;bottom:20vh;left:33vh;display:flex;flex-direction:column;gap:0.5vh;width:10vh';
+        bars.style.cssText = 'position:absolute;bottom:15vh;left:33vh;display:flex;flex-direction:column;gap:0.5vh;width:10vh';
 
         function makeBar(param, val, color, iconSrc) {
             return '<div style="display:flex;align-items:center;gap:0.5vh">' +
