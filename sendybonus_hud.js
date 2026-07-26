@@ -55,14 +55,62 @@ var WEAPON_IMAGES={
 };
 
 
+// --- Список названий оружия по ID (SA-MP) ---
+var WEAPON_NAMES = {
+    0: "Кулак",
+    1: "Кастет",
+    2: "Клюшка для гольфа",
+    3: "Полицейская дубинка",
+    4: "Нож",
+    5: "Бейсбольная бита",
+    6: "Лопата",
+    7: "Бильярдный кий",
+    8: "Катана",
+    9: "Бензопила",
+    10: "Большой дилдо",
+    11: "Малый дилдо",
+    12: "Большой вибратор",
+    13: "Малый вибратор",
+    14: "Букет цветов",
+    15: "Трость",
+    16: "Граната",
+    17: "Слезоточивый газ",
+    18: "Коктейль Молотова",
+    22: "Colt 45",
+    23: "Пистолет с глушителем",
+    24: "Desert Eagle",
+    25: "Дробовик",
+    26: "Обрез",
+    27: "Боевой дробовик",
+    28: "UZI",
+    29: "MP5",
+    30: "AK-47",
+    31: "M4",
+    32: "TEC9",
+    33: "Винтовка",
+    34: "Снайперская винтовка",
+    35: "РПГ",
+    36: "РПГ с наведением",
+    37: "Огнемёт",
+    38: "Миниган",
+    39: "Бомба дистанционного подрыва",
+    40: "Детонатор",
+    41: "Баллончик с краской",
+    42: "Огнетушитель",
+    43: "Фотокамера",
+    44: "Прибор ночного видения",
+    45: "Тепловизор",
+    46: "Парашют"
+};
+
 function AddHud() {
-    var hudStyleElement, loadingNotification;
+    var loadingNotification;
 
     function showLoadingNotification() {
         if (document.getElementById('loadingNotification')) return;
         loadingNotification = document.createElement('div');
         loadingNotification.id = 'loadingNotification';
-        loadingNotification.style.cssText = 'position:fixed;bottom:10%;left:50%;transform:translateX(-50%);display:flex;align-items:center;padding:10px 20px;background:rgba(0,0,0,0.8);color:#fff;font-family:GothamPro,sans-serif;font-size:16px;border-radius:8px;box-shadow:0 4px 8px rgba(0,0,0,0.3);opacity:0;transition:opacity 2.5s;z-index:1000;';
+        loadingNotification.style.cssText = 'position:fixed;bottom:10%;left:50%;transform:translateX(-50%);display:flex;align-items:center;padding:10px 20px;background:rgba(0,0,0,0.8);color:#fff;font-family:sans-serif;font-size:16px;border-radius:8px;box-shadow:0 4px 8px rgba(0,0,0,0.3);opacity:0;transition:opacity 2.5s;z-index:1000;';
         var sp = document.createElement('div');
         sp.style.cssText = 'width:20px;height:20px;border:3px solid rgba(255,255,255,0.3);border-top:3px solid #fff;border-radius:50%;margin-right:10px;animation:sbSpin 1s linear infinite;';
         loadingNotification.appendChild(sp);
@@ -81,98 +129,48 @@ function AddHud() {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
 
+    // Глобальные объекты для иконок (если вы их добавите позже)
     var icons = typeof ICON_IMAGES !== 'undefined' ? ICON_IMAGES : {};
+    var weaponIcons = typeof WEAPON_IMAGES !== 'undefined' ? WEAPON_IMAGES : {};
 
     function createHud() {
-        hudStyleElement = document.createElement("style");
-        hudStyleElement.id = "sbHudStyles";
-        var css = '';
-        // Шрифты
-        css += '@font-face{font-family:GothamPro;src:url(https://raw.githubusercontent.com/goasdasnda/fonts/main/fonts/GothamPro-Black/GothamPro-Black.ttf) format("truetype");font-weight:900;font-style:normal}\n';
-        css += '@font-face{font-family:GothamPro;src:url(https://raw.githubusercontent.com/goasdasnda/fonts/main/fonts/GothamPro-Bold/GothamPro-Bold.ttf) format("truetype");font-weight:700;font-style:normal}\n';
-        css += '@font-face{font-family:GothamPro;src:url(https://raw.githubusercontent.com/goasdasnda/fonts/main/fonts/GothamPro-Medium/GothamPro-Medium.ttf) format("truetype");font-weight:500;font-style:normal}\n';
-        css += '@font-face{font-family:GothamPro;src:url(https://raw.githubusercontent.com/goasdasnda/fonts/main/fonts/GothamPro-Regular/GothamPro.ttf) format("truetype");font-weight:400;font-style:normal}\n';
-        css += '@font-face{font-family:GothamPro;src:url(https://raw.githubusercontent.com/goasdasnda/fonts/main/fonts/GothamPro-Light/GothamPro-Light.ttf) format("truetype");font-weight:300;font-style:normal}\n';
-        css += '@font-face{font-family:GothamPro;src:url(https://raw.githubusercontent.com/goasdasnda/fonts/main/fonts/GothamPro-LightItalic/GothamPro-LightItalic.ttf) format("truetype");font-weight:300;font-style:italic}\n';
-        // Скрытие дефолта
-        css += '#app .hud-radmir-wanted{display:none}\n';
-        css += 'body #app .hud-radmir-info{display:none}\n';
-        css += '.hud-hassle-map .map-mask{display:none}\n';
-        css += '#app .hud-radmir-radar__radar-border{display:none !important}\n';
-        css += '#app .hud-radmir-radar__radar-border_new-year{display:none !important}\n';
-        css += '#app .hud-radmir-radar__radar-border_helloween{display:none !important}\n';
-        css += '#app .hud-radmir-radar__radar-bats{display:none !important}\n';
-        // Радар
-        css += '#app .hud-radmir-radar__map{border-radius:0 !important;border:0.2vh solid #FFD600 !important}\n';
-        css += '#app .hud-radmir-radar{left:5vh !important;bottom:4vh !important}\n';
-        // Авторизация
-        css += 'body .authorization{background:0 0 !important}\n';
-        css += '#app .authorization{display:flex;justify-content:center;align-items:center;height:100vh;margin-top:0 !important}\n';
-        css += '#app .authorization__bg{display:none !important}\n';
-        css += '#app .login-auth:before,#app .login-code:before,#app .registration:before{content:"";background-image:url(hud/autoriz.png);background-size:cover;width:100vw;height:100vh;position:fixed;top:0;left:0;z-index:-1}\n';
-        css += '#app .authorization-field{height:5vh;box-sizing:border-box;border:.15vh solid rgba(255,215,0,0.3);border-radius:.6vh;color:#fff;font-size:1.4vh;width:44vh;position:relative;font-weight:400;background:rgba(30,30,20,0.85);font-family:GothamPro,sans-serif}\n';
-        css += '#app .authorization-field__input{color:#fff !important;font-size:1.4vh;border:none !important;font-family:GothamPro,sans-serif}\n';
-        css += '#app .authorization-field__input::placeholder{color:rgba(255,255,255,0.3) !important}\n';
-        css += '#app .login-form__button{padding:0 4.63vh;height:5.5vh;border-radius:.6vh;line-height:5.5vh;font-size:2vh;font-weight:700;width:18vh;background:linear-gradient(185.93deg,#FFD600 -22.13%,#FFB800 122.51%) !important;color:#000 !important;font-family:GothamPro,sans-serif;border:none;cursor:pointer}\n';
-        css += '#app .login-form__button:hover{box-shadow:0 4px 20px rgba(255,214,0,0.3)}\n';
-        css += '#app .authorization__title{color:#fff !important;font-family:GothamPro,sans-serif;font-weight:900;font-size:3vh;text-transform:uppercase}\n';
-        css += '#app .authorization__subtitle{color:rgba(255,255,255,0.4) !important;font-family:GothamPro,sans-serif;font-size:1.2vh}\n';
-        // Спидометр
-        css += 'body #app .hud-radmir-speedometer-secondary__data__before{background-image:none}\n';
-        css += 'body #app .hud-radmir-speedometer__after{display:none}\n';
-        css += 'body #app .hud-radmir-speedometer{right:1.2vh;bottom:1.5vh;padding-right:1vh;transition:none !important}\n';
-        css += 'body #app .hud-radmir-speedometer-main__hidden{opacity:1}\n';
-        css += 'body #app .hud-radmir-speedometer:after{content:"";position:absolute;width:32vh;height:8vh;background:rgba(30,30,20,0.9);border-radius:.7vh;right:1vh;bottom:1vh;z-index:-1}\n';
-        css += 'body #app .hud-radmir-speedometer-hint{width:0;height:0;background-image:none;display:none}\n';
-        css += 'body #app .hud-radmir-speedometer__new-year{display:none}\n';
-        css += 'body #app .hud-radmir-speedometer-main__speed{width:32vh;height:8vh}\n';
-        css += 'body #app .hud-radmir-speedometer-main__turns{display:none}\n';
-        css += 'body #app .hud-radmir-speedometer-main__speed-fill{display:none}\n';
-        css += 'body #app .hud-radmir-speedometer-main__data{flex-direction:row !important;padding:0;margin:0;position:absolute;top:-3vh;left:1vh}\n';
-        css += 'body #app .hud-radmir-speedometer-main__data-value{font-weight:700;font-size:3vh;color:#fff;text-shadow:none;font-family:GothamPro;font-style:normal;text-align:left}\n';
-        css += 'body #app .hud-radmir-speedometer-main__data-text{font-weight:700;font-size:2vh;text-shadow:none;font-family:GothamPro;font-style:normal;color:#FFD600;margin-left:.5vh;margin-top:0}\n';
-        css += 'body #app .hud-radmir-speedometer-indicators{width:5.3vh;height:5.3vh;margin-left:0;margin-top:0;position:absolute;display:flex;bottom:2.5vh;right:1vh;gap:1.8vh}\n';
-        css += 'body #app .hud-radmir-speedometer-indicators__item{width:4vh;height:4vh;margin-right:1vh !important}\n';
-        css += 'body #app .hud-radmir-speedometer-indicators__item svg path{fill:#FFD600 !important}\n';
-        css += 'body #app .hud-radmir-speedometer-mileage{height:2vh;bottom:1.96vh;right:1vh;padding:0;-webkit-mask-image:none !important;mask-image:none !important}\n';
-        css += 'body #app .hud-radmir-speedometer-mileage__container{grid-template-columns:repeat(7,1.4vh);gap:.9vh;grid-gap:0vh}\n';
-        css += 'body #app .hud-radmir-speedometer-mileage__item{border-bottom:none;height:1.3vh;padding-bottom:2vh;margin-right:.15vh}\n';
-        css += 'body #app .hud-radmir-speedometer-mileage__item-value{font-weight:300;font-size:1.9vh;line-height:1.86vh;color:#fff;text-shadow:none;font-family:GothamPro;font-style:normal;transition:none !important}\n';
-        css += '#app .hud-radmir-speedometer-secondary{width:11vh;height:2.5vh;display:flex;align-items:center;position:absolute;left:-2vh;bottom:2.1vh}\n';
-        css += 'body #app .hud-radmir-speedometer-secondary__fuel{padding:0;position:relative;left:0;top:0}\n';
-        css += 'body #app .hud-radmir-speedometer-secondary__fill{display:none}\n';
-        css += 'body #app .hud-radmir-speedometer-secondary__data-value{font-family:GothamPro;font-weight:400;font-size:2.2vh;color:#fff;text-shadow:none}\n';
-        css += 'body #app .hud-radmir-speedometer-secondary__data-value svg{margin-top:0}\n';
-        css += 'body #app .hud-radmir-speedometer-secondary__data-value svg path{fill:#FFD600}\n';
-        css += 'body #app .hud-radmir-speedometer-secondary__data-text{display:none}\n';
-        // Интерфейсы
-        css += 'body .info-card{background:rgba(0,0,0,0.7);border-radius:31px !important}body .info-card__data{background:rgba(0,0,0,0.6);border-radius:31px}body .info-card .text{color:#cfcfcf}\n';
-        css += '#app .modal-container-wrapper{background:rgba(0,0,0,0.8) !important;border:0.19vh solid rgba(255,215,0,0.15);border-radius:2.5vh !important}#app .modal_violet .modal-container{border-top:none !important}#app .modal-light__light,#app .modal-light__light_second,#app .modal-overlay{background:none !important}\n';
-        css += 'body .window-bg{background-image:none}body .window__before{background-image:none}body .window__title{text-align:center;color:#fff}\n';
-        css += 'body .window-table__item{color:#fff;border-radius:2vh;transition:.25s}body .window-table__item.selected{background:#FFD600;color:#000}body .window-table__item:hover{background:rgba(255,255,255,0.3)}\n';
-        css += 'body .window-button{border-radius:2vh;color:#fff;background:rgba(59,59,59,0.161)}#app .window-button:hover{color:#000;background:#FFD600}#app .window-button:first-child{background:#FFD600 !important}\n';
-        css += '#app .radmir-chat-input__input{background:rgba(0,0,0,0.8) !important;border-radius:11px !important;border:1px solid rgba(255,215,0,0.15) !important}#app .radmir-chat-input__input input{margin-left:.9vh !important;color:#fff !important}\n';
-        css += '#app .trade-items__container{border-radius:10px;background:rgba(0,0,0,0.74) !important}#app .trade-items{background:none}\n';
-        css += '#app .inventory{background:none}#app .inventory-container__info__container{background:rgba(0,0,0,0.8) !important;border-radius:1.1vh}#app .inventory-extra__container,#app .inventory-main{background:rgba(0,0,0,0.8);border-radius:1.1vh;padding:2vh}#app .inventory-main__after,#app .inventory-main__before{display:none}\n';
-        css += '#app .fuel__container{background:rgba(0,0,0,0.8);padding:3.33vh 2.96vh}#app .fuel__button{background:linear-gradient(185.93deg,#FFD600 -22.13%,#FFB800 122.51%) !important;color:#000 !important}\n';
-        css += '#app .death{font-style:italic;background:rgba(0,0,0,0.74) !important}\n';
-        css += '#app .player-interaction__container{background:rgba(0,0,0,0.8);border:none}#app .player-interaction__title,.player-interaction__title_active{color:#fff !important}#app .player-interaction__icon{fill:white}\n';
-        hudStyleElement.innerHTML = css;
-        document.head.appendChild(hudStyleElement);
+        // Минимальные стили – только для нашего худа, не трогаем глобальные
+        var style = document.createElement('style');
+        style.textContent = `
+            /* Скрываем стандартные элементы */
+            #app .hud-radmir-wanted { display: none; }
+            body #app .hud-radmir-info { display: none; }
+            #app .hud-radmir-radar__radar-border { display: none !important; }
+            #app .hud-radmir-radar__radar-border_new-year { display: none !important; }
+            #app .hud-radmir-radar__radar-border_helloween { display: none !important; }
+            #app .hud-radmir-radar__radar-bats { display: none !important; }
+            /* Радар – оставляем как есть, только обводим */
+            #app .hud-radmir-radar__map { border-radius: 0 !important; border: 0.2vh solid #FFD600 !important; }
+            #app .hud-radmir-radar { left: 5vh !important; bottom: 4vh !important; }
+            /* Спидометр – только данные */
+            #app .hud-radmir-speedometer-main__data { flex-direction: row !important; padding: 0; margin: 0; position: absolute; top: -3vh; left: 1vh; }
+            #app .hud-radmir-speedometer-main__data-value { font-weight: 700; font-size: 3vh; color: #fff; text-shadow: none; font-family: inherit; font-style: normal; text-align: left; }
+            #app .hud-radmir-speedometer-main__data-text { font-weight: 700; font-size: 2vh; text-shadow: none; font-family: inherit; font-style: normal; color: #FFD600; margin-left: .5vh; margin-top: 0; }
+            #app .hud-radmir-speedometer-indicators__item svg path { fill: #FFD600 !important; }
+            /* Наш контейнер – не влияет на другие элементы */
+            #sbHudContainer * { box-sizing: border-box; font-family: Arial, Helvetica, sans-serif; }
+            #sbHudContainer .sb-bar-label { font-family: inherit; }
+        `;
+        document.head.appendChild(style);
 
         var hud = document.createElement("div");
         hud.id = 'sbHudContainer';
-        hud.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;font-family:GothamPro,sans-serif';
+        hud.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;';
 
         // ЛОГО
         var logo = document.createElement('div');
         logo.style.cssText = 'position:absolute;top:15px;right:20px;text-align:right';
-        logo.innerHTML = '<div style="display:flex;align-items:center;justify-content:flex-end;gap:8px"><img id="sbLogoImg" src="" style="height:3.5vh;width:auto;display:none"><div style="font-family:GothamPro;font-weight:900;font-size:3.2vh;line-height:1;text-shadow:0 2px 8px rgba(0,0,0,0.5)"><span style="color:#fff">SENDY</span><span style="color:#FFD600">BONUS</span> <span style="font-size:1.8vh;color:#FFD600;font-weight:700">x3</span></div></div>';
+        logo.innerHTML = '<div style="display:flex;align-items:center;justify-content:flex-end;gap:8px"><div style="font-family:Arial,Helvetica,sans-serif;font-weight:900;font-size:3.2vh;line-height:1;text-shadow:0 2px 8px rgba(0,0,0,0.5)"><span style="color:#fff">SENDY</span><span style="color:#FFD600">BONUS</span> <span style="font-size:1.8vh;color:#FFD600;font-weight:700">x3</span></div></div>';
         hud.appendChild(logo);
 
         // ДЕНЬГИ
         var cashEl = document.createElement('div');
-        cashEl.style.cssText = 'position:absolute;top:10vh;right:20px;text-align:right;display:flex;align-items:center;justify-content:flex-end;color:white;font-family:GothamPro;font-weight:900;font-style:italic;font-size:2.59vh;text-shadow:0 0 .46vh #000000cb';
+        cashEl.style.cssText = 'position:absolute;top:10vh;right:20px;text-align:right;display:flex;align-items:center;justify-content:flex-end;color:white;font-family:Arial,Helvetica,sans-serif;font-weight:900;font-style:italic;font-size:2.59vh;text-shadow:0 0 .46vh #000000cb';
         cashEl.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;width:2.8vh;height:2.8vh;background:#FFD600;border-radius:0.4vh;font-size:1.8vh;font-style:normal;font-weight:900;color:#000;margin-right:0.8vh">P</span><span id="sbCashVal">0</span>';
         hud.appendChild(cashEl);
 
@@ -182,12 +180,12 @@ function AddHud() {
         bars.style.cssText = 'position:absolute;bottom:10vh;left:33vh;display:flex;flex-direction:column;gap:0.5vh;width:10vh';
 
         function makeBar(param, val, color, iconSrc) {
-            return '<div style="display:flex;align-items:center;gap:0.5vh">' +
+            return '<div style="display:flex;align-items:center;gap:0.5vh;font-family:Arial,Helvetica,sans-serif;">' +
                 (iconSrc ? '<img src="' + iconSrc + '" style="width:1.2vh;height:1.2vh;flex-shrink:0">' : '<span style="width:1.2vh"></span>') +
                 '<div style="flex:1;height:0.5vh;background:rgba(255,255,255,0.15);border-radius:1vh;overflow:hidden">' +
                 '<div class="sb-fill" data-p="' + param + '" style="width:' + val + '%;height:100%;background:' + color + ';border-radius:1vh;transition:width .3s"></div>' +
                 '</div>' +
-                '<span class="sb-pv" data-p="' + param + '" style="font-family:GothamPro;font-weight:700;font-style:italic;color:#fff;font-size:1.2vh;min-width:2.5vh;text-align:right">' + val + '</span>' +
+                '<span class="sb-pv" data-p="' + param + '" style="font-weight:700;font-style:italic;color:#fff;font-size:1.2vh;min-width:2.5vh;text-align:right">' + val + '</span>' +
                 '</div>';
         }
         bars.innerHTML = makeBar('health', '100', '#ed2e2e', icons.health||'') +
@@ -205,14 +203,14 @@ function AddHud() {
         var weaponWrap = document.createElement('div');
         weaponWrap.id = 'sbWeaponWrap';
         weaponWrap.style.cssText = 'position:absolute;bottom:65px;right:20px;display:none;align-items:center;gap:8px;padding:6px 14px;background:rgba(30,30,20,0.85);border:1px solid rgba(255,215,0,0.25);border-radius:9px;transition:bottom .4s cubic-bezier(.4,0,.2,1)';
-        weaponWrap.innerHTML = '<img id="sbWeaponIcon" src="" style="height:6vh;width:auto"><div style="display:flex;align-items:baseline;gap:2px"><span style="font-family:GothamPro;font-weight:700;font-style:italic;font-size:1.3vh;color:#fff" id="sbAmmoInClip">0</span><span style="font-family:GothamPro;font-weight:300;font-style:italic;font-size:0.9vh;color:rgba(255,255,255,0.6)" id="sbAmmoTotal">/0</span></div>';
+        weaponWrap.innerHTML = '<img id="sbWeaponIcon" src="" style="height:6vh;width:auto;display:none;"><span id="sbWeaponName" style="font-family:Arial,Helvetica,sans-serif;font-weight:700;font-size:1.6vh;color:#fff;white-space:nowrap;">Кулак</span><div style="display:flex;align-items:baseline;gap:2px"><span style="font-family:Arial,Helvetica,sans-serif;font-weight:700;font-style:italic;font-size:1.3vh;color:#fff" id="sbAmmoInClip">0</span><span style="font-family:Arial,Helvetica,sans-serif;font-weight:300;font-style:italic;font-size:0.9vh;color:rgba(255,255,255,0.6)" id="sbAmmoTotal">/0</span></div>';
         hud.appendChild(weaponWrap);
 
         // ВРЕМЯ
         var timePanel = document.createElement('div');
         timePanel.id = 'sbTimeWrap';
-        timePanel.style.cssText = 'position:absolute;bottom:20px;right:20px;display:flex;align-items:center;padding:14px 24px;background:rgba(30,30,20,0.85);border:1px solid rgba(255,215,0,0.25);border-radius:9px;gap:16px;transition:right .4s cubic-bezier(.4,0,.2,1)';
-        timePanel.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="#FFD600" style="flex-shrink:0"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg><span style="font-family:GothamPro;font-weight:500;font-size:14px;color:#fff;min-width:7.5ch;text-align:center;display:inline-block" id="sbTime">--:--:--</span><span style="width:14px;display:inline-block"></span><span style="font-family:GothamPro;font-weight:400;font-size:13px;color:#fff;min-width:5ch;display:inline-block" id="sbDate">--.--</span>';
+        timePanel.style.cssText = 'position:absolute;bottom:20px;right:20px;display:flex;align-items:center;padding:14px 24px;background:rgba(30,30,20,0.85);border:1px solid rgba(255,215,0,0.25);border-radius:9px;gap:16px;transition:right .4s cubic-bezier(.4,0,.2,1);font-family:Arial,Helvetica,sans-serif;';
+        timePanel.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="#FFD600" style="flex-shrink:0"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg><span style="font-weight:500;font-size:14px;color:#fff;min-width:7.5ch;text-align:center;display:inline-block" id="sbTime">--:--:--</span><span style="width:14px;display:inline-block"></span><span style="font-weight:400;font-size:13px;color:#fff;min-width:5ch;display:inline-block" id="sbDate">--.--</span>';
         hud.appendChild(timePanel);
 
         document.body.appendChild(hud);
@@ -234,31 +232,40 @@ function AddHud() {
         health: function(v) { updateBar('health', v); },
         armour: function(v) { updateBar('armour', v); },
         hunger: function(v) { updateBar('hunger', v); },
-        breath: function(v) {
-            var b = document.querySelector('.sb-breath');
-            if (b) b.style.display = v < 99 ? 'flex' : 'none';
-            updateBar('breath', v);
-        },
+        breath: function(v) { updateBar('breath', v); },
         money: function(v) {
             var el = document.getElementById('sbCashVal');
             if (el) el.textContent = formatNumberWithDots(v);
         },
         weapon: function(v) {
             var icon = document.getElementById('sbWeaponIcon');
+            var nameEl = document.getElementById('sbWeaponName');
             var wrap = document.getElementById('sbWeaponWrap');
-            console.log('[SendyBonus] weapon called with value:', v, 'type:', typeof v); // ОТЛАДКА
+            var id = parseInt(v, 10);
+            if (isNaN(id)) id = 0;
+
+            // Ищем иконку
+            var iconSrc = '';
+            if (weaponIcons && weaponIcons[v]) iconSrc = weaponIcons[v];
+            else if (weaponIcons && weaponIcons[id]) iconSrc = weaponIcons[id];
+
             if (icon) {
-                // Берем глобальный объект напрямую
-                var weaponMap = typeof WEAPON_IMAGES !== 'undefined' ? WEAPON_IMAGES : {};
-                var key = String(v).trim();
-                var numKey = parseInt(v, 10);
-                var iconSrc = weaponMap[key] || weaponMap[numKey] || '';
-                console.log('[SendyBonus] Found icon src:', iconSrc); // ОТЛАДКА
-                icon.src = iconSrc;
+                if (iconSrc) {
+                    icon.src = iconSrc;
+                    icon.style.display = 'block';
+                } else {
+                    icon.style.display = 'none';
+                }
             }
+
+            // Название
+            if (nameEl) {
+                var name = WEAPON_NAMES[id] || 'Оружие ' + id;
+                nameEl.textContent = name;
+            }
+
             if (wrap) {
-                var val = +v;
-                wrap.style.display = (val > 0) ? 'flex' : 'none';
+                wrap.style.display = (id > 0) ? 'flex' : 'none';
                 var speedo = document.querySelector('.hud-radmir-speedometer');
                 var inCar = speedo && getComputedStyle(speedo).display !== 'none';
                 wrap.style.bottom = inCar ? '100px' : '65px';
