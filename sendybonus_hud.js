@@ -550,15 +550,15 @@ function AddHud() {
             var icon = document.getElementById('sbWeaponIcon');
             var wrap = document.getElementById('sbWeaponWrap');
             if (icon) {
-                var key = String(v);
-                if (weaponIcons && weaponIcons[key]) {
-                    icon.src = weaponIcons[key];
-                } else {
-                    icon.src = '';
-                }
+                var key = String(v).trim();
+                var numKey = parseInt(v);
+                // пробуем оба варианта ключа
+                var iconSrc = weaponIcons[key] || weaponIcons[numKey] || '';
+                icon.src = iconSrc;
             }
             if (wrap) {
-                wrap.style.display = (v > 0) ? 'flex' : 'none';
+                var val = +v; // приводим к числу
+                wrap.style.display = (val > 0) ? 'flex' : 'none';
                 var speedo = document.querySelector('.hud-radmir-speedometer');
                 var inCar = speedo && getComputedStyle(speedo).display !== 'none';
                 wrap.style.bottom = inCar ? '100px' : '65px';
